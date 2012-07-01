@@ -27,6 +27,28 @@ class NpmMonitorTest < Test::Unit::TestCase
     assert_equal "#{@database_base_url}/test", uri.to_s
   end
 
+  def test_github_url
+    url = NpmMonitor.github_url({
+      'type'       => 'git',
+      'url'        => 'git://github.com/visionmedia/express.git'
+    })
+
+    assert_equal 'https://github.com/visionmedia/express', url
+  end
+
+  def test_github_url_non_git
+    url = NpmMonitor.github_url({
+      'type'       => 'svn',
+      'url'        => 'http://something'
+    })
+
+    assert_nil url
+  end
+
+  def test_github_url_invalid
+    assert_nil NpmMonitor.github_url(nil)
+  end
+
   def test_get_changes
     changes_url = "#{@database_base_url}/_changes?feed=longpoll&since=1029"
     response = {
@@ -103,7 +125,7 @@ class NpmMonitorTest < Test::Unit::TestCase
       }
     }
 
-    formatted = @monitor.format_package(package)
+    formatted = NpmMonitor.format_package(package)
 
     expected = {
       :authors                => 'TJ Holowaychuk',
@@ -125,6 +147,7 @@ class NpmMonitorTest < Test::Unit::TestCase
       },
       :info                   => 'Sinatra inspired web development framework',
       :name                   => 'express',
+      :source_code_uri        => 'https://github.com/visionmedia/express',
       :version                => '2.5.11'
     }
 

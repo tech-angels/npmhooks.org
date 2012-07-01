@@ -26,7 +26,15 @@ class NpmMonitor
     body['changes']
   end
 
-  def format_package(package)
+  def self.github_url(repository)
+    return unless repository
+    return unless uri = URI.parse(repository['url']).normalize rescue nil
+    return unless uri.host == 'github.com'
+    return unless match = uri.path.match(/\A\/([^\/]+\/[^\/]+)\.git\z/)
+    return "https://github.com/#{match[1]}"
+  end
+
+  def self.format_package(package)
     latest = package['versions'][package['dist-tags']['latest']]
 
     formatted = {
@@ -41,9 +49,11 @@ class NpmMonitor
       },
       :info             => latest['description'],
       :name             => latest['name'],
+      :source_code_uri  => github_url(latest['repository']),
       :version          => latest['version']
     }
 
+    # Populate dependencies.development from devDependencies
     (latest['devDependencies'] || {}).each_key.sort.each do |name|
       formatted[:dependencies][:development] << {
         :name           => name,
@@ -51,6 +61,7 @@ class NpmMonitor
       }
     end
 
+    # Populate dependencies.runtime from dependencies
     (latest['dependencies'] || {}).each_key.sort.each do |name|
       formatted[:dependencies][:runtime] << {
         :name           => name,
