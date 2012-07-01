@@ -18,3 +18,9 @@ tmp
 .yardoc
 _yardoc
 doc/
+
+
+db/*.sqlite3
+log
+config/initializers/secret_token.rb
+config/database.yml
