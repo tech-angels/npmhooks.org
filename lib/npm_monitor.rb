@@ -31,12 +31,17 @@ class NpmMonitor
     JSON.parse(res.body)
   end
 
+  def monitor_changes?
+    sleep(30)
+    true
+  end
+
   def self.github_url(repository)
     return unless repository
     return unless uri = URI.parse(repository['url']).normalize rescue nil
     return unless uri.host == 'github.com'
     return unless match = uri.path.match(/\A\/([^\/]+\/[^\/]+)\.git\z/)
-    return "https://github.com/#{match[1]}"
+    "https://github.com/#{match[1]}"
   end
 
   def self.format_package(package)

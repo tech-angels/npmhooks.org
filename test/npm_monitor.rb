@@ -169,4 +169,9 @@ class NpmMonitorTest < Test::Unit::TestCase
     assert_equal expected, formatted
   end
 
+  def test_monitor_changes
+    @monitor.expects(:sleep).with(30)
+    assert @monitor.monitor_changes?
+  end
+
 end
