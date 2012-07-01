@@ -22,5 +22,5 @@ doc/
 
 db/*.sqlite3
 log
-config/initializers/secret_token.rb
+config/application.yml
 config/database.yml
