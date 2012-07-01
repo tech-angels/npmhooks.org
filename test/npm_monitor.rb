@@ -31,8 +31,8 @@ class NpmMonitorTest < Test::Unit::TestCase
     changes_url = "#{@database_base_url}/_changes?feed=longpoll&since=1029"
     response = {
       :changes => [
-        { :seq => 1030, :id => "some-node-package" },
-        { :seq => 1031, :id => "another-package" },
+        { :seq => 1030, :id => 'some-node-package' },
+        { :seq => 1031, :id => 'another-package' },
       ],
       :last_seq => 1031
     }
@@ -40,12 +40,13 @@ class NpmMonitorTest < Test::Unit::TestCase
 
     changes = @monitor.get_changes(1029)
 
-    assert_kind_of Array, changes
-    assert_equal 2, changes.length
-    assert_equal 1030, changes[0]['seq']
-    assert_equal 'some-node-package', changes[0]['id']
-    assert_equal 1031, changes[1]['seq']
-    assert_equal 'another-package', changes[1]['id']
+    assert_kind_of Array, changes['changes']
+    assert_equal 2, changes['changes'].length
+    assert_equal 1030, changes['changes'][0]['seq']
+    assert_equal 'some-node-package', changes['changes'][0]['id']
+    assert_equal 1031, changes['changes'][1]['seq']
+    assert_equal 'another-package', changes['changes'][1]['id']
+    assert_equal 1031, changes['last_seq']
   end
 
   def test_get_package
@@ -172,6 +173,22 @@ class NpmMonitorTest < Test::Unit::TestCase
   def test_monitor_changes
     @monitor.expects(:sleep).with(30)
     assert @monitor.monitor_changes?
+  end
+
+  def test_process_changes
+    changes = [
+      { 'seq' => 1030, 'id' => 'some-node-package' },
+      { 'seq' => 1031, 'id' => 'another-package' }
+    ]
+
+    @monitor.expects(:schedule_hooks).with('some-node-package')
+    @monitor.expects(:schedule_hooks).with('another-package')
+
+    @monitor.process_changes(changes)
+  end
+
+  def test_schedule_hooks
+
   end
 
 end

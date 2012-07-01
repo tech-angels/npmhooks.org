@@ -23,7 +23,6 @@ class NpmMonitor
   def get_changes(since)
     res = Net::HTTP.get_response(uri_for_changes(since))
     body = JSON.parse(res.body)
-    body['changes']
   end
 
   def get_package(package)
@@ -34,6 +33,16 @@ class NpmMonitor
   def monitor_changes?
     sleep(30)
     true
+  end
+
+  def process_changes(changes)
+    changes.each do |change|
+      schedule_hooks(change['id'])
+    end
+  end
+
+  def schedule_hooks(package_name)
+
   end
 
   def self.github_url(repository)
