@@ -26,6 +26,11 @@ class NpmMonitor
     body['changes']
   end
 
+  def get_package(package)
+    res = Net::HTTP.get_response(uri_for_package(package))
+    JSON.parse(res.body)
+  end
+
   def self.github_url(repository)
     return unless repository
     return unless uri = URI.parse(repository['url']).normalize rescue nil

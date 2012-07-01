@@ -27,6 +27,42 @@ class NpmMonitorTest < Test::Unit::TestCase
     assert_equal "#{@database_base_url}/test", uri.to_s
   end
 
+  def test_get_changes
+    changes_url = "#{@database_base_url}/_changes?feed=longpoll&since=1029"
+    response = {
+      :changes => [
+        { :seq => 1030, :id => "some-node-package" },
+        { :seq => 1031, :id => "another-package" },
+      ],
+      :last_seq => 1031
+    }
+    FakeWeb.register_uri(:get, changes_url, :body => JSON.dump(response))
+
+    changes = @monitor.get_changes(1029)
+
+    assert_kind_of Array, changes
+    assert_equal 2, changes.length
+    assert_equal 1030, changes[0]['seq']
+    assert_equal 'some-node-package', changes[0]['id']
+    assert_equal 1031, changes[1]['seq']
+    assert_equal 'another-package', changes[1]['id']
+  end
+
+  def test_get_package
+    package_url = "#{@database_base_url}/express"
+    response = {
+      '_id'         => 'express',
+      '_rev'        => '302-c61077032ef8b66dccd3b6e94294528a',
+      'name'        => 'express',
+      'description' => 'Sinatra inspired web development framework'
+    }
+    FakeWeb.register_uri(:get, package_url, :body => JSON.dump(response))
+
+    package = @monitor.get_package('express')
+
+    assert_equal 'express', package['_id']
+  end
+
   def test_github_url
     url = NpmMonitor.github_url({
       'type'       => 'git',
@@ -47,27 +83,6 @@ class NpmMonitorTest < Test::Unit::TestCase
 
   def test_github_url_invalid
     assert_nil NpmMonitor.github_url(nil)
-  end
-
-  def test_get_changes
-    changes_url = "#{@database_base_url}/_changes?feed=longpoll&since=1029"
-    response = {
-      :changes => [
-        { :seq => 1030, :id => "some-node-package" },
-        { :seq => 1031, :id => "another-package" },
-      ],
-      :last_seq => 1031
-    }
-    FakeWeb.register_uri(:get, changes_url, :body => JSON.dump(response))
-
-    changes = @monitor.get_changes(1029)
-
-    assert_kind_of Array, changes
-    assert_equal 2, changes.length
-    assert_equal 1030, changes[0]['seq']
-    assert_equal 'some-node-package', changes[0]['id']
-    assert_equal 1031, changes[1]['seq']
-    assert_equal 'another-package', changes[1]['id']
   end
 
   def test_format_package
