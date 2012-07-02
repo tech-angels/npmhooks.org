@@ -1,0 +1,41 @@
+{
+  "run_list": [
+    "recipe[build-essential]",
+    "recipe[ufw::databag]",
+    "recipe[openssh]",
+    "recipe[users]",
+    "recipe[git]",
+    "recipe[rvm::system]",
+    "recipe[memcached]",
+    "recipe[mysql::server]",
+    "recipe[nginx::source]",
+    "recipe[redis::server_source]",
+    "recipe[redis::_server_service]",
+    "recipe[nodejs]"
+  ],
+  "nginx": {
+    "version": "1.2.1"
+  },
+  "rvm": {
+    "default_ruby": "ruby-1.9.3-p194",
+    "user_default_ruby": "ruby-1.9.3-p194"
+  },
+  "mysql": {
+    "server_root_password": "temporary_password_Pqa7RkzyDic4YMD2R3vDtFHpJ4hmoECzpz74T4zxfmE",
+    "server_repl_password": "temporary_password_Pqa7RkzyDic4YMD2R3vDtFHpJ4hmoECzpz74T4zxfmE",
+    "server_debian_password": "temporary_password_Pqa7RkzyDic4YMD2R3vDtFHpJ4hmoECzpz74T4zxfmE",
+    "package_name": "mysql-server-5.5",
+    "use_upstart": true,
+    "skip-innodb": true,
+    "tunable": {
+      "sort_buffer_size": "64K",
+      "net_buffer_length": "2K"
+    }
+  },
+  "redis": {
+    "source": {
+      "sha": "9e388d2c070b15136da1277f4d21f1c788694b12",
+      "version": "2.4.15"
+    }
+  }
+}

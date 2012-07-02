@@ -1,0 +1,8 @@
+{
+  "id": "nginx__source",
+  "rules": [
+    {"http": {
+      "port": "80"
+    }}
+  ]
+}

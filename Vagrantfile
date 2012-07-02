@@ -68,7 +68,7 @@ Vagrant::Config.run do |config|
   # some recipes and/or roles.
   #
   config.vm.provision :chef_solo do |chef|
-    chef_root = File.expand_path('../../test-chef-solo/chef', __FILE__)
+    chef_root = File.expand_path('../chef', __FILE__)
     chef.cookbooks_path = ["#{chef_root}/cookbooks", "#{chef_root}/site-cookbooks"]
     chef.data_bags_path = "#{chef_root}/data_bags"
 
