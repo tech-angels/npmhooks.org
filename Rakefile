@@ -4,4 +4,4 @@
 
 require File.expand_path('../config/application', __FILE__)
 
-Vagrant::Application.load_tasks
+NPMHooks::Application.load_tasks
