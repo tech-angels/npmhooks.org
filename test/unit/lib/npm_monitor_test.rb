@@ -1,5 +1,5 @@
-require File.expand_path('test_helper', File.dirname(__FILE__))
-require File.expand_path('../lib/npm_monitor', File.dirname(__FILE__))
+require 'test_helper'
+require 'npm_monitor'
 
 class NpmMonitorTest < Test::Unit::TestCase
 
