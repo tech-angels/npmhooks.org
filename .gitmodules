@@ -13,9 +13,6 @@
 [submodule "chef/cookbooks/build-essential"]
 	path = chef/cookbooks/build-essential
 	url = git://github.com/opscode-cookbooks/build-essential.git
-[submodule "chef/cookbooks/nginx"]
-	path = chef/cookbooks/nginx
-	url = git://github.com/opscode-cookbooks/nginx.git
 [submodule "chef/cookbooks/ohai"]
 	path = chef/cookbooks/ohai
 	url = git://github.com/opscode-cookbooks/ohai.git
@@ -25,9 +22,6 @@
 [submodule "chef/cookbooks/memcached"]
 	path = chef/cookbooks/memcached
 	url = git://github.com/opscode-cookbooks/memcached.git
-[submodule "chef/cookbooks/mysql"]
-	path = chef/cookbooks/mysql
-	url = git://github.com/opscode-cookbooks/mysql.git
 [submodule "chef/cookbooks/openssl"]
 	path = chef/cookbooks/openssl
 	url = git://github.com/opscode-cookbooks/openssl.git
@@ -37,3 +31,9 @@
 [submodule "chef/cookbooks/nodejs"]
 	path = chef/cookbooks/nodejs
 	url = git://github.com/mdxp/nodejs-cookbook.git
+[submodule "chef/cookbooks/mysql"]
+	path = chef/cookbooks/mysql
+	url = git://github.com/cjoudrey/mysql.git
+[submodule "chef/cookbooks/nginx"]
+	path = chef/cookbooks/nginx
+	url = git://github.com/cjoudrey/nginx.git
