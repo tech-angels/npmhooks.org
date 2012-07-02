@@ -1,6 +1,3 @@
-require 'net/http'
-require 'json'
-
 class NpmMonitor
 
   #def monitor(since)
