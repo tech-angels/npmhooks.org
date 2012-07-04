@@ -6,7 +6,6 @@
     "recipe[users]",
     "recipe[git]",
     "recipe[rvm::system]",
-    "recipe[memcached]",
     "recipe[mysql::server]",
     "recipe[nginx::source]",
     "recipe[redis::server_source]",
