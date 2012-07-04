@@ -19,9 +19,6 @@
 [submodule "chef/cookbooks/rvm"]
 	path = chef/cookbooks/rvm
 	url = git://github.com/fnichol/chef-rvm.git
-[submodule "chef/cookbooks/memcached"]
-	path = chef/cookbooks/memcached
-	url = git://github.com/opscode-cookbooks/memcached.git
 [submodule "chef/cookbooks/openssl"]
 	path = chef/cookbooks/openssl
 	url = git://github.com/opscode-cookbooks/openssl.git
