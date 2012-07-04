@@ -25,22 +25,26 @@ class NpmMonitor
   def start
     while monitor_changes?
       changes = NpmPackage.remote_find_updated_since(last_update)
-     # process_changes(changes)
+      process_changes(changes)
     end
   end
 
-  def set_last_update(last_update)
-
-  end
-
   def process_changes(changes)
-
+    changes.each do |change|
+      process_change(change)
+    end
   end
 
-  def schedule_hooks(package_name)
-    # Obtain the package info from NPM
-    # Save the info into redis for later us
-    # Schedule the webhooks
+  def process_change(change)
+    package = NpmPackage.remote_find_by_name(change['id'])
+    # @todo save the package json into redis
+    # @todo schedule webhooks
+    set_last_update(change['seq'])
+  end
+
+  def set_last_update(last_update)
+    # @todo save the last update in local var
+    # @todo save the last update in redis
   end
 
 end

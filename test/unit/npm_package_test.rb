@@ -33,13 +33,12 @@ class NpmPackageTest < Test::Unit::TestCase
 
     changes = NpmPackage.remote_find_updated_since(1029)
 
-    assert_kind_of Array, changes['changes']
-    assert_equal 2, changes['changes'].length
-    assert_equal 1030, changes['changes'][0]['seq']
-    assert_equal 'some-node-package', changes['changes'][0]['id']
-    assert_equal 1031, changes['changes'][1]['seq']
-    assert_equal 'another-package', changes['changes'][1]['id']
-    assert_equal 1031, changes['last_seq']
+    assert_kind_of Array, changes
+    assert_equal 2, changes.length
+    assert_equal 1030, changes[0]['seq']
+    assert_equal 'some-node-package', changes[0]['id']
+    assert_equal 1031, changes[1]['seq']
+    assert_equal 'another-package', changes[1]['id']
   end
 
   def test_remote_find_by_name
