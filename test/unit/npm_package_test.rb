@@ -164,5 +164,4 @@ class NpmPackageTest < Test::Unit::TestCase
     assert_equal expected, package.as_json
   end
 
-
 end
