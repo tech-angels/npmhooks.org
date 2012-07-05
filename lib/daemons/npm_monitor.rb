@@ -42,9 +42,9 @@ class NpmMonitor
     set_last_update(change['seq'])
   end
 
-  def set_last_update(last_update)
-    # @todo save the last update in local var
-    # @todo save the last update in redis
+  def set_last_update(new_last_update)
+    @last_update = new_last_update
+    Redis.current.set('NpmMonitor::last_update', last_update)
   end
 
 end

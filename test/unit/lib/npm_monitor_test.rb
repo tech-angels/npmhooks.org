@@ -10,6 +10,7 @@ class NpmMonitorTest < Test::Unit::TestCase
   def teardown
     NpmPackage.unstub(:remote_find_updated_since)
     NpmPackage.unstub(:remote_find_by_name)
+    Redis.current.unstub(:set)
   end
 
   def test_last_update
@@ -117,6 +118,13 @@ class NpmMonitorTest < Test::Unit::TestCase
     @monitor.expects(:set_last_update).once.with(1030)
 
     @monitor.process_change(change)
+  end
+
+  def test_set_last_update
+    Redis.current.expects(:set).once.with('NpmMonitor::last_update', 5)
+
+    @monitor.set_last_update(5)
+    assert_equal 5, @monitor.last_update
   end
 
 end
