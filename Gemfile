@@ -7,6 +7,7 @@ gem 'rails', '3.2.6'
 
 gem 'sqlite3'
 
+gem 'redis', '~> 3.0.1'
 gem 'resque'
 
 # Gems used only for assets and not required

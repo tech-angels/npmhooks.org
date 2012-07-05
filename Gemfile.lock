@@ -128,6 +128,7 @@ DEPENDENCIES
   jquery-rails
   mocha
   rails (= 3.2.6)
+  redis (~> 3.0.1)
   resque
   sass-rails (~> 3.2.3)
   sqlite3
