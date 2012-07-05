@@ -39,7 +39,7 @@ class NpmMonitor
 
   def process_change(change)
     package = NpmPackage.remote_find_by_name(change['id'])
-    # @todo save the package json into redis
+    Redis.current.set("NpmPackage::#{package.name}", package.to_json)
     # @todo schedule webhooks
     set_last_update(change['seq'])
   end
