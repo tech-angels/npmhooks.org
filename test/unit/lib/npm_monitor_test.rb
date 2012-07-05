@@ -15,8 +15,7 @@ class NpmMonitorTest < Test::Unit::TestCase
   end
 
   def test_last_update
-    @monitor = NpmMonitor.new(1029)
-    assert_equal 1029, @monitor.last_update
+    assert_equal nil, @monitor.last_update
   end
 
   def test_stop?

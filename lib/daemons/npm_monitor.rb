@@ -1,8 +1,8 @@
 class NpmMonitor
 
-  def initialize(last_update = nil)
+  def initialize
     @stop = false
-    @last_update = last_update
+    @last_update = nil
   end
 
   def stop
