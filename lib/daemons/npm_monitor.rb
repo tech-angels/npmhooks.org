@@ -23,6 +23,8 @@ class NpmMonitor
   end
 
   def start
+    @last_update = Redis.current.get('NpmMonitor::last_update')
+
     while monitor_changes?
       changes = NpmPackage.remote_find_updated_since(last_update)
       process_changes(changes)

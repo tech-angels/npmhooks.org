@@ -11,6 +11,7 @@ class NpmMonitorTest < Test::Unit::TestCase
     NpmPackage.unstub(:remote_find_updated_since)
     NpmPackage.unstub(:remote_find_by_name)
     Redis.current.unstub(:set)
+    Redis.current.unstub(:get)
   end
 
   def test_last_update
@@ -38,7 +39,7 @@ class NpmMonitorTest < Test::Unit::TestCase
       { 'seq' => 1031, 'id' => 'another-package' }
     ]
 
-    @monitor.expects(:last_update).once.returns(100)
+    Redis.current.expects(:get).once.with('NpmMonitor::last_update').returns(100)
     NpmPackage.stubs(:remote_find_updated_since).with(100).returns(response)
     @monitor.expects(:monitor_changes?).times(2).returns(true, false)
     @monitor.expects(:process_changes).once.with(response)
