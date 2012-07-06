@@ -2,6 +2,7 @@ class NpmMonitor
 
   def initialize
     @logger = Logger.new(STDOUT)
+    # @todo log to a env. file in log/
     @stop = false
     @last_update = nil
   end
