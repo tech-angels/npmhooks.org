@@ -23,7 +23,7 @@ class NpmPackageTest < Test::Unit::TestCase
   def test_remote_find_updated_since
     changes_url = "#{@database_base_url}/_changes?feed=longpoll&since=1029"
     response = {
-      :changes => [
+      :results => [
         { :seq => 1030, :id => 'some-node-package' },
         { :seq => 1031, :id => 'another-package' },
       ],

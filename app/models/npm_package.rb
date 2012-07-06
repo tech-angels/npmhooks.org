@@ -1,3 +1,5 @@
+require 'net/http'
+
 class NpmPackage
 
   def initialize(package)
@@ -60,7 +62,7 @@ class NpmPackage
   def self.remote_find_updated_since(since)
     res = Net::HTTP.get_response(remote_uri_for_changes(since))
     body = JSON.parse(res.body)
-    body['changes']
+    body['results']
   end
 
   def self.remote_find_by_name(package)
