@@ -51,8 +51,9 @@ class NpmMonitor
   def process_change(change)
     @logger.info("Processing: #{change['id']}")
     package = NpmPackage.remote_find_by_name(change['id'])
-    @logger.info("Saving to Redis under NpmPackage::#{package.name}")
-    Redis.current.set("NpmPackage::#{package.name}", package.to_json)
+    @logger.info("Saving to Redis under NpmPackage::#{package.name}::#{change['seq']}")
+    Redis.current.set("NpmPackage::#{package.name}::#{change['seq']}", package.to_json)
+    # @todo set an expire on the redis npmpackage key
     # @todo schedule webhooks
     set_last_update(change['seq'])
   end
