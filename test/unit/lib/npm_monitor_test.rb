@@ -45,6 +45,14 @@ class NpmMonitorTest < Test::Unit::TestCase
     @monitor.start
   end
 
+  def test_start_with_timeout
+    Redis.current.expects(:get).once.with('NpmMonitor::last_update').returns(100)
+    NpmPackage.stubs(:remote_find_updated_since).with(100).raises(Timeout::Error)
+    @monitor.expects(:monitor_changes?).times(2).returns(true, false)
+    @monitor.expects(:process_changes).never
+    @monitor.start
+  end
+
   def test_process_changes
     changes = [
       { 'seq' => 1030, 'id' => 'some-node-package' },

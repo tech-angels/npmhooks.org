@@ -29,7 +29,13 @@ class NpmMonitor
     @logger.info("Last update: #{last_update}")
     while monitor_changes?
       @logger.info("Fetching changes since: #{last_update}")
-      changes = NpmPackage.remote_find_updated_since(last_update)
+      begin
+        changes = NpmPackage.remote_find_updated_since(last_update)
+      rescue Timeout::Error
+        @logger.error("Timeout!")
+        next
+      end
+
       process_changes(changes)
     end
   end
