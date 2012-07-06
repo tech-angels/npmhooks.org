@@ -56,6 +56,10 @@ class NpmMonitorTest < Test::Unit::TestCase
     @monitor.process_changes(changes)
   end
 
+  def test_process_changes_with_no_changes
+    assert_equal false, @monitor.process_changes(nil)
+  end
+
   def test_process_change
     remote_package = {
       '_id'         => 'express',
