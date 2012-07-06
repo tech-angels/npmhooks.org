@@ -140,4 +140,12 @@ class NpmMonitorTest < Test::Unit::TestCase
     assert_equal 5, @monitor.last_update
   end
 
+  def test_set_last_update_lesser
+    @monitor.set_last_update(5)
+    Redis.current.expects(:set).never.with('NpmMonitor::last_update', 1)
+    @monitor.set_last_update(1)
+    assert_equal 5, @monitor.last_update
+  end
+
+
 end

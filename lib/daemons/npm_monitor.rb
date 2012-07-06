@@ -59,6 +59,7 @@ class NpmMonitor
   end
 
   def set_last_update(new_last_update)
+    return if new_last_update < last_update.to_i
     @logger.info("Setting last update to: #{new_last_update}")
     @last_update = new_last_update
     Redis.current.set('NpmMonitor::last_update', last_update)
