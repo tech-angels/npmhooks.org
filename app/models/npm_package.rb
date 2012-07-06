@@ -14,7 +14,7 @@ class NpmPackage
     latest = @package['versions'][@package['dist-tags']['latest']]
 
     hash = {
-      :authors          => latest['author']['name'],
+      :authors          => NpmPackage.author_name_from_package(latest),
       :dependencies     => {
         :development    => [],
         :runtime        => []
@@ -46,6 +46,10 @@ class NpmPackage
     end
 
     hash
+  end
+
+  def self.author_name_from_package(package)
+    package['author'] ? package['author']['name'] : nil
   end
 
   def self.remote_uri_for_changes(since)

@@ -163,4 +163,12 @@ class NpmPackageTest < Test::Unit::TestCase
     assert_equal expected, package.as_json
   end
 
+  def test_author_name_from_package
+    package = { 'author' => { 'name' => 'Bob' } }
+    assert_equal 'Bob', NpmPackage.author_name_from_package(package)
+
+    package = {}
+    assert_equal nil, NpmPackage.author_name_from_package(package)
+  end
+
 end
