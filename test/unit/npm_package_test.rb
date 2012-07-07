@@ -57,6 +57,19 @@ class NpmPackageTest < Test::Unit::TestCase
     assert_equal 'express', package.name
   end
 
+  def test_remote_find_by_name_deleted
+    package_url = "#{@database_base_url}/deleted_package"
+    response = {
+      :error        => 'not_found',
+      :reason       => 'deleted'
+    }
+    FakeWeb.register_uri(:get, package_url, :body => JSON.dump(response))
+
+    assert_raises ActiveRecord::RecordNotFound do
+      NpmPackage.remote_find_by_name('deleted_package')
+    end
+  end
+
   def test_github_url
     url = NpmPackage.github_url({
       'type'       => 'git',

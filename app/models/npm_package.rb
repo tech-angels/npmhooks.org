@@ -71,7 +71,9 @@ class NpmPackage
 
   def self.remote_find_by_name(package)
     res = Net::HTTP.get_response(remote_uri_for_package(package))
-    NpmPackage.new(JSON.parse(res.body))
+    response = JSON.parse(res.body)
+    raise ActiveRecord::RecordNotFound if response['error'] == 'not_found'
+    NpmPackage.new(response)
   end
 
   def self.github_url(repository)
