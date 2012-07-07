@@ -133,6 +133,15 @@ class NpmMonitorTest < Test::Unit::TestCase
     @monitor.process_change(change)
   end
 
+  def test_process_change_deleted
+    change = { 'seq' => 1030, 'id' => 'deleted_package' }
+    NpmPackage.stubs(:remote_find_by_name).once.with('deleted_package').raises(ActiveRecord::RecordNotFound)
+    Redis.current.expects(:set).never
+    @monitor.expects(:set_last_update).once.with(1030)
+
+    @monitor.process_change(change)
+  end
+
   def test_set_last_update
     Redis.current.expects(:set).once.with('NpmMonitor::last_update', 5)
 
