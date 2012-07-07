@@ -6,7 +6,8 @@ gem 'rails', '3.2.6'
 # gem 'rails', :git => 'git://github.com/rails/rails.git'
 
 gem 'sqlite3'
-
+gem 'omniauth'
+gem 'omniauth-github'
 gem 'redis', '~> 3.0.1'
 gem 'resque'
 
