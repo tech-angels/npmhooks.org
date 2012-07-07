@@ -1,8 +1,7 @@
 class NpmMonitor
 
   def initialize
-    @logger = Logger.new(STDOUT)
-    # @todo log to a env. file in log/
+    @logger = Logger.new("#{Rails.root}/log/npmmonitor_#{ENV['RAILS_ENV']}.log")
     @stop = false
     @last_update = nil
   end
