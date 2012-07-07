@@ -24,8 +24,9 @@ class NpmPackageTest < Test::Unit::TestCase
     changes_url = "#{@database_base_url}/_changes?feed=longpoll&since=1029"
     response = {
       :results => [
+        { :seq => 1029, :id => '_design/app' },
         { :seq => 1030, :id => 'some-node-package' },
-        { :seq => 1031, :id => 'another-package' },
+        { :seq => 1031, :id => 'another-package' }
       ],
       :last_seq => 1031
     }
