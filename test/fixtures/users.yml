@@ -1,0 +1,9 @@
+cjoudrey:
+  provider: github
+  uid: 12345
+  login: cjoudrey
+
+bob:
+  provider: github
+  uid: 23456
+  login: bob
