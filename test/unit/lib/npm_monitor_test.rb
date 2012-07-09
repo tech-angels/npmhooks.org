@@ -1,7 +1,7 @@
 require 'test_helper'
 require 'daemons/npm_monitor'
 
-class NpmMonitorTest < Test::Unit::TestCase
+class NpmMonitorTest < ActiveSupport::TestCase
 
   def setup
     @monitor = NpmMonitor.new

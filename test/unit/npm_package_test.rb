@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class NpmPackageTest < Test::Unit::TestCase
+class NpmPackageTest < ActiveSupport::TestCase
 
   def setup
     @database_base_url = ENV['NPM_DATABASE_URL']
