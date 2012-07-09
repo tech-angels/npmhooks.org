@@ -1,5 +1,5 @@
 require 'test_helper'
-require 'daemons/npm_monitor'
+require 'npm_monitor'
 
 class NpmMonitorTest < ActiveSupport::TestCase
 
@@ -155,6 +155,5 @@ class NpmMonitorTest < ActiveSupport::TestCase
     @monitor.set_last_update(1)
     assert_equal 5, @monitor.last_update
   end
-
 
 end
