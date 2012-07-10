@@ -151,6 +151,7 @@ class NpmMonitorTest < ActiveSupport::TestCase
   end
 
   def test_set_last_update_lesser
+    Redis.current.expects(:set).once.with('NpmMonitor::last_update', 5)
     @monitor.set_last_update(5)
     Redis.current.expects(:set).never.with('NpmMonitor::last_update', 1)
     @monitor.set_last_update(1)
