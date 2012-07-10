@@ -128,6 +128,7 @@ class NpmMonitorTest < ActiveSupport::TestCase
     package = NpmPackage.new(remote_package)
     NpmPackage.stubs(:remote_find_by_name).once.with('some-node-package').returns(package)
     Redis.current.expects(:set).once.with("NpmPackage::#{package.name}::1030", package.to_json)
+    Redis.current.expects(:expire).once.with("NpmPackage::#{package.name}::1030", 6.hours)
     @monitor.expects(:set_last_update).once.with(1030)
 
     @monitor.process_change(change)
