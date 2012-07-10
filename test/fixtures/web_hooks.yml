@@ -1,6 +1,6 @@
 example:
   user: cjoudrey
-  url: http://example.com
+  url: http://example.com/test
   failure_count: 0
   created_at: 2012-07-07 12:01:02
   updated_at: 2012-07-07 12:01:02

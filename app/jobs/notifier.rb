@@ -20,7 +20,18 @@ class Notifier
   end
 
   def fire
-    # @todo Fire the webhook
+    timeout(5) do
+      RestClient.post url,
+                      payload,
+                      :timeout        => 5,
+                      :open_timeout   => 5,
+                      'Content-Type'  => 'application/json',
+                      'Authorization' => authorization
+    end
+    true
+  rescue *(HTTP_ERRORS + [RestClient::Exception, SocketError, SystemCallError]) => e
+    WebHook.find_by_url(url).try(:increment!, :failure_count)
+    false
   end
 
   def timeout(sec, &block)

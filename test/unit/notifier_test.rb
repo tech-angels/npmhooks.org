@@ -4,8 +4,9 @@ class NotifierTest < ActiveSupport::TestCase
   def setup
     Notifier.unstub(:new)
 
+    @webhook = web_hooks(:example)
     @notifier = Notifier.new(
-      web_hooks(:example).url,
+      @webhook.url,
       'express',
       '2.5.11',
       '1234',
@@ -20,6 +21,38 @@ class NotifierTest < ActiveSupport::TestCase
   def test_payload
     Redis.current.expects(:get).once.with('NpmPackage::express::1234')
     @notifier.payload
+  end
+
+  def test_fire
+    FakeWeb.register_uri(
+      :post,
+      @notifier.url,
+      :parameters => @notifier.payload,
+      :status => 200
+    )
+
+    @notifier.expects(:timeout).once.with(5).yields
+
+    assert_equal true, @notifier.fire
+    assert_equal URI(@notifier.url).path, FakeWeb.last_request.path
+    assert_equal @notifier.payload, FakeWeb.last_request.body
+    assert_equal @notifier.authorization, FakeWeb.last_request['Authorization']
+    assert_equal 'application/json', FakeWeb.last_request['Content-Type']
+  end
+
+  def test_fire_fail
+     FakeWeb.register_uri(
+      :post,
+      @notifier.url,
+      :parameters => @notifier.payload,
+      :status => 404
+    )
+
+    old_failure_count = @webhook.failure_count
+
+    @notifier.expects(:timeout).once.with(5).yields
+    assert_equal false, @notifier.fire
+    assert_equal old_failure_count + 1, WebHook.find_by_url(@notifier.url).failure_count
   end
 
   def test_perform

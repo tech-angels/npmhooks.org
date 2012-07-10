@@ -34,4 +34,6 @@ NPMHooks::Application.configure do
 
   # Print deprecation notices to the stderr
   config.active_support.deprecation = :stderr
+
+  FakeWeb.allow_net_connect = false
 end
