@@ -1,7 +1,6 @@
 require 'test_helper'
 
 class ApiKeyTest < ActiveSupport::TestCase
-
   def test_random_key
     key = ApiKey.random_key
     assert_equal 32, key.length
@@ -17,10 +16,10 @@ class ApiKeyTest < ActiveSupport::TestCase
   end
 
   def test_create
-    key = ApiKey.new
-    key.user = users(:cjoudrey)
-    key.save
+    key = ApiKey.create({
+      :user => users(:cjoudrey)
+    }, :without_protection => true)
+
     assert_not_nil key.api_key
   end
-
 end

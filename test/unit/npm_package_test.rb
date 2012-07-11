@@ -1,7 +1,6 @@
 require 'test_helper'
 
 class NpmPackageTest < ActiveSupport::TestCase
-
   def setup
     @database_base_url = ENV['NPM_DATABASE_URL']
   end
@@ -184,5 +183,4 @@ class NpmPackageTest < ActiveSupport::TestCase
     package = {}
     assert_equal nil, NpmPackage.author_name_from_package(package)
   end
-
 end

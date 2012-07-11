@@ -2,7 +2,6 @@ require 'test_helper'
 require 'npm_monitor'
 
 class NpmMonitorTest < ActiveSupport::TestCase
-
   def setup
     @monitor = NpmMonitor.new
   end
@@ -157,5 +156,4 @@ class NpmMonitorTest < ActiveSupport::TestCase
     @monitor.set_last_update(1)
     assert_equal 5, @monitor.last_update
   end
-
 end
