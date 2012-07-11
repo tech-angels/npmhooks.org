@@ -10,7 +10,7 @@ class NotifierTest < ActiveSupport::TestCase
       'express',
       '2.5.11',
       '1234',
-      api_keys(:cjoudrey_key).api_key
+      users(:cjoudrey).api_key
     )
   end
 
@@ -59,14 +59,14 @@ class NotifierTest < ActiveSupport::TestCase
     Notifier.stubs(:new).once.with(
       web_hooks(:example).url,
       'express', '2.5.11',
-      '1234', api_keys(:cjoudrey_key).api_key
+      '1234', users(:cjoudrey).api_key
     ).returns(@notifier)
     @notifier.expects(:fire).once
 
     Notifier.perform(
       web_hooks(:example).url,
       'express', '2.5.11',
-      '1234', api_keys(:cjoudrey_key).api_key
+      '1234', users(:cjoudrey).api_key
     )
   end
 end

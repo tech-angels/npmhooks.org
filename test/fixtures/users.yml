@@ -2,8 +2,10 @@ cjoudrey:
   provider: github
   uid: 12345
   login: cjoudrey
+  api_key: <%= 'test1234' * 4 %>
 
 bob:
   provider: github
   uid: 23456
   login: bob
+  api_key: <%= 'test4567' * 4 %>

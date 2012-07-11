@@ -1,11 +1,20 @@
 class User < ActiveRecord::Base
   has_many :web_hooks
-  has_many :api_keys
 
-  after_create :auto_assign_api_key
+  before_create :assign_api_key
 
-  def auto_assign_api_key
-    self.api_keys << ApiKey.create
+  def assign_api_key
+    self.api_key ||= User.random_unique_key
+  end
+
+  def self.random_unique_key
+    key = random_key
+    return random_unique_key if User.exists?(:api_key => key)
+    key
+  end
+
+  def self.random_key
+    SecureRandom::hex(16)
   end
 
   def self.from_omniauth(auth)

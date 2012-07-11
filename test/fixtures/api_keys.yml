@@ -1,5 +1,0 @@
-cjoudrey_key:
-  user: cjoudrey
-  api_key: <%= 'test1234' * 4 %>
-  created_at: 2012-07-07 12:01:02
-  updated_at: 2012-07-07 12:01:02
