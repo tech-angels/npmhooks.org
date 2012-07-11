@@ -3,6 +3,13 @@ NPMHooks::Application.routes.draw do
   match 'auth/:provider/callback', to: 'sessions#create'
   match 'auth/failure', to: redirect('/')
   match 'signout', to: 'sessions#destroy', as: 'signout'
+
+  namespace :api do
+    namespace :v1 do
+      resources :web_hooks, :only => [:create, :index]
+    end
+  end
+
   # The priority is based upon order of creation:
   # first created -> highest priority.
 
