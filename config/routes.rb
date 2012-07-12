@@ -6,7 +6,12 @@ NPMHooks::Application.routes.draw do
 
   namespace :api do
     namespace :v1 do
-      resources :web_hooks, :only => [:create, :index]
+      resources :web_hooks, :only => [:create, :index] do
+        collection do
+          delete :remove
+          post :fire
+        end
+      end
     end
   end
 
