@@ -6,14 +6,20 @@ class Api::V1::WebHooksController < Api::BaseController
   end
 
   def create
-    render(:text => 'test')
+    webhook = @current_user.web_hooks.build(:url => params[:url])
+
+    if webhook.save
+      render(:text => '@todo', :status => :created)
+    else
+      render(:text => '@todo', :status => :conflict)
+    end
   end
 
   def remove
-    render(:text => 'test')
+    render(:text => '@todo')
   end
 
   def fire
-    render(:text => 'test')
+    render(:text => '@todo')
   end
 end
