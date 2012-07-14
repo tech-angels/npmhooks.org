@@ -13,25 +13,25 @@ class NpmMonitorTest < ActiveSupport::TestCase
     Redis.current.unstub(:get)
   end
 
-  def test_last_update
+  test '#last_update is nil by default' do
     assert_equal nil, @monitor.last_update
   end
 
-  def test_stop?
+  test '#stop? is false by default' do
     assert_equal false, @monitor.stop?
   end
 
-  def test_stop
+  test '#stop stops the monitor' do
     @monitor.stop
     assert_equal true, @monitor.stop?
   end
 
-  def test_monitor_changes
+  test '#monitor_changes should sleep before returning true' do
     @monitor.expects(:sleep).with(30)
     assert @monitor.monitor_changes?
   end
 
-  def test_start
+  test '#start' do
     response = [
       { 'seq' => 1030, 'id' => 'some-node-package' },
       { 'seq' => 1031, 'id' => 'another-package' }
@@ -44,7 +44,7 @@ class NpmMonitorTest < ActiveSupport::TestCase
     @monitor.start
   end
 
-  def test_start_with_timeout
+  test '#start should handle http timeouts and continue' do
     Redis.current.expects(:get).once.with('NpmMonitor::last_update').returns(100)
     NpmPackage.stubs(:remote_find_updated_since).with(100).raises(Timeout::Error)
     @monitor.expects(:monitor_changes?).times(2).returns(true, false)
@@ -52,7 +52,7 @@ class NpmMonitorTest < ActiveSupport::TestCase
     @monitor.start
   end
 
-  def test_process_changes
+  test '#process_changes should call #process_change for each change' do
     changes = [
       { 'seq' => 1030, 'id' => 'some-node-package' },
       { 'seq' => 1031, 'id' => 'another-package' }
@@ -63,11 +63,11 @@ class NpmMonitorTest < ActiveSupport::TestCase
     @monitor.process_changes(changes)
   end
 
-  def test_process_changes_with_no_changes
+  test '#process_changes with nil should return false' do
     assert_equal false, @monitor.process_changes(nil)
   end
 
-  def test_process_change
+  test '#process_change' do
     remote_package = {
       '_id'         => 'express',
       '_rev'        => '302-c61077032ef8b66dccd3b6e94294528a',
@@ -133,7 +133,7 @@ class NpmMonitorTest < ActiveSupport::TestCase
     @monitor.process_change(change)
   end
 
-  def test_process_change_deleted
+  test '#process_change for a delete package' do
     change = { 'seq' => 1030, 'id' => 'deleted_package' }
     NpmPackage.stubs(:remote_find_by_name).once.with('deleted_package').raises(ActiveRecord::RecordNotFound)
     Redis.current.expects(:set).never
@@ -142,14 +142,14 @@ class NpmMonitorTest < ActiveSupport::TestCase
     @monitor.process_change(change)
   end
 
-  def test_set_last_update
+  test '#set_last_update' do
     Redis.current.expects(:set).once.with('NpmMonitor::last_update', 5)
 
     @monitor.set_last_update(5)
     assert_equal 5, @monitor.last_update
   end
 
-  def test_set_last_update_lesser
+  test '#set_last_update should not touch the last_update counter if the value is lesser than current' do
     Redis.current.expects(:set).once.with('NpmMonitor::last_update', 5)
     @monitor.set_last_update(5)
     Redis.current.expects(:set).never.with('NpmMonitor::last_update', 1)

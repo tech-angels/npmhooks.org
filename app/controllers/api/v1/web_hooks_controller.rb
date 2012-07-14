@@ -9,14 +9,19 @@ class Api::V1::WebHooksController < Api::BaseController
     webhook = @current_user.web_hooks.build(:url => params[:url])
 
     if webhook.save
-      render(:text => '@todo', :status => :created)
+      render(:text => webhook.success_message, :status => :created)
     else
-      render(:text => '@todo', :status => :conflict)
+      render(:text => webhook.errors.full_messages, :status => :conflict)
     end
   end
 
   def remove
-    render(:text => '@todo')
+    webhook = @current_user.web_hooks.find_by_url(params[:url])
+    if webhook.try(:destroy)
+      render(:text => webhook.removed_message, :status => 200)
+    else
+      render(:text => 'No such webhook exists under your account.', :status => :not_found)
+    end
   end
 
   def fire

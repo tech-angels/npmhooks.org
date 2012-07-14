@@ -31,6 +31,8 @@ gem 'jquery-rails'
 group :test do
   gem 'fakeweb'
   gem 'mocha', :require => nil
+  gem 'validates_formatting_of'
+  gem 'shoulda'
 end
 
 # To use ActiveModel has_secure_password

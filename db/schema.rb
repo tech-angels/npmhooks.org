@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120713032824) do
+ActiveRecord::Schema.define(:version => 20120714012749) do
 
   create_table "users", :force => true do |t|
     t.string   "provider"
@@ -31,6 +31,6 @@ ActiveRecord::Schema.define(:version => 20120713032824) do
     t.datetime "updated_at",                   :null => false
   end
 
-  add_index "web_hooks", ["user_id", "url"], :name => "index_web_hooks_on_user_id_and_url", :unique => true
+  add_index "web_hooks", ["url"], :name => "index_web_hooks_on_url", :unique => true
 
 end
