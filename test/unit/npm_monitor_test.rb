@@ -11,6 +11,8 @@ class NpmMonitorTest < ActiveSupport::TestCase
     NpmPackage.unstub(:remote_find_by_name)
     Redis.current.unstub(:set)
     Redis.current.unstub(:get)
+    Redis.current.unstub(:expire)
+    WebHook.unstub(:all)
   end
 
   test '#last_update is nil by default' do
@@ -68,72 +70,13 @@ class NpmMonitorTest < ActiveSupport::TestCase
   end
 
   test '#process_change' do
-    remote_package = {
-      '_id'         => 'express',
-      '_rev'        => '302-c61077032ef8b66dccd3b6e94294528a',
-      'name'        => 'express',
-      'description' => 'Sinatra inspired web development framework',
-      'dist-tags'   => {
-        '3.0'       => '3.0.0beta3',
-        'latest'    => '2.5.11'
-      },
-      'versions'    => {
-        '2.5.11'      => {
-          'name'         => 'express',
-          'description'  => 'Sinatra inspired web development framework',
-          'version'      => '2.5.11',
-          'author'       => {
-            'name'         => 'TJ Holowaychuk',
-            'email'        => 'tj@vision-media.ca'
-          },
-          'contributors' => [],
-          'dependencies' => {
-            'connect'      => '>= 1.4.0 < 2.0.0',
-            'mime'         => '>= 0.0.1',
-            'qs'           => '>= 0.0.6'
-          },
-          'devDependencies' => {
-            'expresso'        => '0.7.2',
-          },
-          'keywords'     => [],
-          'repository'   => {
-              'type'       => 'git',
-              'url'        => 'git://github.com/visionmedia/express.git'
-          },
-          'main'         => 'index',
-          'bin'          => {
-              'express'    => './bin/express'
-          },
-          'engines'     => {
-              'node'      => '>= 0.4.1 < 0.5.0'
-          },
-          '_id'              =>  'express@2.3.5',
-          '_engineSupported' => true,
-          '_npmVersion'      => '1.0.3',
-          '_nodeVersion'     => 'v0.4.7',
-          '_defaultsLoaded'  => true,
-          'dist'             => {
-              'shasum'         => 'a3113d0d9db4ea118e2c12b044a04c16741e799b',
-              'tarball'        => 'http://registry.npmjs.org/express/-/express-2.3.5.tgz'
-          },
-          'scripts'          => {},
-          'directories'      => {}
-        }
-      }
-    }
-
     change = { 'seq' => 1030, 'id' => 'express' }
 
-    package = NpmPackage.new(remote_package)
+    package = {}
     NpmPackage.stubs(:remote_find_by_name).once.with('express').returns(package)
-    Redis.current.expects(:set).once.with("NpmPackage::express::1030", package.to_json)
-    Redis.current.expects(:expire).once.with("NpmPackage::express::1030", 9.hours)
-    Redis.current.expects(:set).once.with("NpmPackage::last_updated_package", {
-      :package_name     => 'express',
-      :version          => '2.5.11',
-      :version_cache_id => 1030
-    })
     @monitor.expects(:set_last_update).once.with(1030)
+    @monitor.expects(:save_to_cache).once.with(package, 1030)
+    @monitor.expects(:schedule_webhooks).once.with(package, 1030)
 
     @monitor.process_change(change)
   end
@@ -145,6 +88,56 @@ class NpmMonitorTest < ActiveSupport::TestCase
     @monitor.expects(:set_last_update).once.with(1030)
 
     @monitor.process_change(change)
+  end
+
+  test '#save_to_cache' do
+    package = stub(
+      :name => 'express',
+      :version => '2.5.11',
+      :to_json => {}
+    )
+
+    Redis.current.expects(:set).once.with("NpmPackage::express::1030", package.to_json)
+    Redis.current.expects(:expire).once.with("NpmPackage::express::1030", 9.hours)
+    Redis.current.expects(:set).once.with("NpmPackage::last_updated_package", {
+      :package_name     => 'express',
+      :version          => '2.5.11',
+      :version_cache_id => 1030
+    })
+
+    @monitor.save_to_cache(package, 1030)
+  end
+
+  test '#schedule_webhooks' do
+    webhooks = [
+      stub(:url => 'http://example.com', :user => stub(:api_key => '1234')),
+      stub(:url => 'http://example.org', :user => stub(:api_key => '4567'))
+    ]
+    package = stub(
+      :name => 'express',
+      :version => '2.5.11',
+      :to_json => {}
+    )
+    change_id = 1030
+
+    @monitor.expects(:webhooks).once.returns(webhooks)
+    @monitor.expects(:schedule_webhook).once.with(webhooks[0], package, change_id)
+    @monitor.expects(:schedule_webhook).once.with(webhooks[1], package, change_id)
+
+    @monitor.schedule_webhooks(package, change_id)
+  end
+
+  test '#schedule_webhook' do
+    webhook = stub(:url => 'http://example.com');
+    package = stub(
+      :name => 'express',
+      :version => '2.5.11'
+    )
+    change_id = 1030
+
+    webhook.expects(:fire).once.with(package.name, package.version, change_id)
+
+    @monitor.schedule_webhook(webhook, package, change_id)
   end
 
   test '#set_last_update' do
@@ -160,5 +153,10 @@ class NpmMonitorTest < ActiveSupport::TestCase
     Redis.current.expects(:set).never.with('NpmMonitor::last_update', 1)
     @monitor.set_last_update(1)
     assert_equal 5, @monitor.last_update
+  end
+
+  test '#webhooks' do
+    WebHook.expects(:all).once.with(:include => :user)
+    @monitor.webhooks
   end
 end

@@ -19,7 +19,7 @@ class Notifier
     Redis.current.get("NpmPackage::#{package_name}::#{version_cache_id}")
   end
 
-  def fire
+  def perform
     timeout(5) do
       RestClient.post url,
                       payload,
@@ -39,6 +39,6 @@ class Notifier
   end
 
   def self.perform(url, package_name, version, version_cache_id, api_key)
-    Notifier.new(url, package_name, version, version_cache_id, api_key).fire
+    Notifier.new(url, package_name, version, version_cache_id, api_key).perform
   end
 end

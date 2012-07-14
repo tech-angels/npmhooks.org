@@ -53,21 +53,40 @@ class NpmMonitor
 
     begin
       package = NpmPackage.remote_find_by_name(change['id'])
-      @logger.info("Saving to Redis under NpmPackage::#{package.name}::#{change['seq']}")
-      Redis.current.set("NpmPackage::#{package.name}::#{change['seq']}", package.to_json)
-      Redis.current.expire("NpmPackage::#{package.name}::#{change['seq']}", 9.hours)
-      Redis.current.set('NpmPackage::last_updated_package', {
-        :package_name     => package.name,
-        :version          => package.version,
-        :version_cache_id => change['seq']
-      })
-      # @todo schedule webhooks (or deleted webhook)
+      save_to_cache(package, change['seq'])
+      schedule_webhooks(package, change['seq'])
     rescue ActiveRecord::RecordNotFound
       @logger.info("#{change['id']} has been deleted.")
       # @todo schedule deleted webhooks
     ensure
       set_last_update(change['seq'])
     end
+  end
+
+  def save_to_cache(package, change_id)
+    @logger.info("Saving to Redis under NpmPackage::#{package.name}::#{change_id}")
+    Redis.current.set("NpmPackage::#{package.name}::#{change_id}", package.to_json)
+    Redis.current.expire("NpmPackage::#{package.name}::#{change_id}", 9.hours)
+    Redis.current.set('NpmPackage::last_updated_package', {
+      :package_name     => package.name,
+      :version          => package.version,
+      :version_cache_id => change_id
+    })
+  end
+
+  def schedule_webhooks(package, change_id)
+    webhooks.each do |webhook|
+      schedule_webhook(webhook, package, change_id)
+    end
+  end
+
+  def schedule_webhook(webhook, package, change_id)
+    @logger.info("Scheduling webhook on #{webhook.url} for #{package.name} v#{package.version}")
+    webhook.fire(package.name, package.version, change_id)
+  end
+
+  def webhooks
+    WebHook.all(:include => :user)
   end
 
   def set_last_update(new_last_update)

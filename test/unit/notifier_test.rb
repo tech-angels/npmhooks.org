@@ -23,7 +23,7 @@ class NotifierTest < ActiveSupport::TestCase
     @notifier.payload
   end
 
-  def test_fire
+  def test_perform
     FakeWeb.register_uri(
       :post,
       @notifier.url,
@@ -33,14 +33,14 @@ class NotifierTest < ActiveSupport::TestCase
 
     @notifier.expects(:timeout).once.with(5).yields
 
-    assert_equal true, @notifier.fire
+    assert_equal true, @notifier.perform
     assert_equal URI(@notifier.url).path, FakeWeb.last_request.path
     assert_equal @notifier.payload, FakeWeb.last_request.body
     assert_equal @notifier.authorization, FakeWeb.last_request['Authorization']
     assert_equal 'application/json', FakeWeb.last_request['Content-Type']
   end
 
-  def test_fire_fail
+  def test_perform_fail
      FakeWeb.register_uri(
       :post,
       @notifier.url,
@@ -51,7 +51,7 @@ class NotifierTest < ActiveSupport::TestCase
     old_failure_count = @webhook.failure_count
 
     @notifier.expects(:timeout).once.with(5).yields
-    assert_equal false, @notifier.fire
+    assert_equal false, @notifier.perform
     assert_equal old_failure_count + 1, WebHook.find_by_url(@notifier.url).failure_count
   end
 
@@ -61,7 +61,7 @@ class NotifierTest < ActiveSupport::TestCase
       'express', '2.5.11',
       '1234', users(:cjoudrey).api_key
     ).returns(@notifier)
-    @notifier.expects(:fire).once
+    @notifier.expects(:perform).once
 
     Notifier.perform(
       web_hooks(:example).url,

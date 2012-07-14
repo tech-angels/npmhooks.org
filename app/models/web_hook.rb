@@ -14,4 +14,7 @@ class WebHook < ActiveRecord::Base
   def removed_message
     "Successfully removed webhook to #{url}"
   end
+
+  def fire(package_name, package_version, change_id, delayed=true)
+  end
 end
