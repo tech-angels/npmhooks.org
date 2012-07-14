@@ -5,6 +5,16 @@ class NpmPackageTest < ActiveSupport::TestCase
     @database_base_url = ENV['NPM_DATABASE_URL']
   end
 
+  def test_name
+    package = NpmPackage.new({ 'name' => 'express' })
+    assert_equal 'express', package.name
+  end
+
+  def test_version
+    package = NpmPackage.new({ 'dist-tags' => { 'latest' => '1.0.0' }})
+    assert_equal '1.0.0', package.version
+  end
+
   def test_remote_uri_for_changes
     uri = NpmPackage.remote_uri_for_changes(1029)
 

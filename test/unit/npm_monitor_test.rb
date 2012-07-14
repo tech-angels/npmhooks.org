@@ -122,12 +122,17 @@ class NpmMonitorTest < ActiveSupport::TestCase
       }
     }
 
-    change = { 'seq' => 1030, 'id' => 'some-node-package' }
+    change = { 'seq' => 1030, 'id' => 'express' }
 
     package = NpmPackage.new(remote_package)
-    NpmPackage.stubs(:remote_find_by_name).once.with('some-node-package').returns(package)
-    Redis.current.expects(:set).once.with("NpmPackage::#{package.name}::1030", package.to_json)
-    Redis.current.expects(:expire).once.with("NpmPackage::#{package.name}::1030", 6.hours)
+    NpmPackage.stubs(:remote_find_by_name).once.with('express').returns(package)
+    Redis.current.expects(:set).once.with("NpmPackage::express::1030", package.to_json)
+    Redis.current.expects(:expire).once.with("NpmPackage::express::1030", 9.hours)
+    Redis.current.expects(:set).once.with("NpmPackage::last_updated_package", {
+      :package_name     => 'express',
+      :version          => '2.5.11',
+      :version_cache_id => 1030
+    })
     @monitor.expects(:set_last_update).once.with(1030)
 
     @monitor.process_change(change)

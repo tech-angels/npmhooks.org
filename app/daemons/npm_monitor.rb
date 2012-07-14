@@ -55,8 +55,12 @@ class NpmMonitor
       package = NpmPackage.remote_find_by_name(change['id'])
       @logger.info("Saving to Redis under NpmPackage::#{package.name}::#{change['seq']}")
       Redis.current.set("NpmPackage::#{package.name}::#{change['seq']}", package.to_json)
-      Redis.current.expire("NpmPackage::#{package.name}::#{change['seq']}", 6.hours)
-      # @todo set an expire on the redis npmpackage key
+      Redis.current.expire("NpmPackage::#{package.name}::#{change['seq']}", 9.hours)
+      Redis.current.set('NpmPackage::last_updated_package', {
+        :package_name     => package.name,
+        :version          => package.version,
+        :version_cache_id => change['seq']
+      })
       # @todo schedule webhooks (or deleted webhook)
     rescue ActiveRecord::RecordNotFound
       @logger.info("#{change['id']} has been deleted.")

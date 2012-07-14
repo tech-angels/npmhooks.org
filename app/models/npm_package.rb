@@ -10,8 +10,12 @@ class NpmPackage
     @package['name']
   end
 
+  def version
+    @package['dist-tags']['latest']
+  end
+
   def as_json(options=nil)
-    latest = @package['versions'][@package['dist-tags']['latest']]
+    latest = @package['versions'][version]
 
     hash = {
       :authors          => NpmPackage.author_name_from_package(latest),
