@@ -119,7 +119,7 @@ class Api::V1::WebHooksControllerTest < ActionController::TestCase
       setup do
         Redis.current.expects(:get).at_least_once.with('NpmPackage::last_updated_package').returns({
           :package_name     => 'express',
-          :package_version  => '2.5.11',
+          :version          => '2.5.11',
           :version_cache_id => '1030'
         }.to_json)
         Redis.current.expects(:get).with('NpmPackage::express::1030').returns('{}')
