@@ -31,6 +31,7 @@ gem 'jquery-rails'
 group :test do
   gem 'fakeweb'
   gem 'mocha', :require => nil
+  gem 'resque_unit'
   gem 'validates_formatting_of'
   gem 'shoulda'
 end
