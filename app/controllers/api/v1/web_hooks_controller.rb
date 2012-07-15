@@ -25,6 +25,12 @@ class Api::V1::WebHooksController < Api::BaseController
   end
 
   def fire
-    render(:text => '@todo')
+    package = JSON.parse(Redis.current.get('NpmPackage::last_updated_package'), :symbolize_names => true)
+    webhook = current_user.web_hooks.new(:url => params[:url])
+    if webhook.fire(package[:package_name], package[:package_version], package[:version_cache_id], false)
+      render(:text => webhook.deployed_message)
+    else
+      render(:text => webhook.failed_message, :status => 400)
+    end
   end
 end

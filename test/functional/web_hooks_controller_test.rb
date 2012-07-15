@@ -114,5 +114,49 @@ class Api::V1::WebHooksControllerTest < ActionController::TestCase
 
       should respond_with 404
     end
+
+    context 'on POST to fire a hook' do
+      setup do
+        Redis.current.expects(:get).at_least_once.with('NpmPackage::last_updated_package').returns({
+          :package_name     => 'express',
+          :package_version  => '2.5.11',
+          :version_cache_id => '1030'
+        }.to_json)
+        Redis.current.expects(:get).with('NpmPackage::express::1030').returns('{}')
+        @url = 'http://example.com/test-fire'
+      end
+
+      context 'for a valid url' do
+        setup do
+          FakeWeb.register_uri(:post, @url, :status => 200)
+          post :fire, :url => @url
+        end
+
+        should 'say webhook has been deployed' do
+          assert_equal @response.body, "Successfully deployed webhook to #{@url}"
+        end
+
+        should 'perform a POST request to url' do
+          assert_equal Net::HTTP::Post, FakeWeb.last_request.class
+          assert_equal '/test-fire', FakeWeb.last_request.path
+        end
+      end
+
+      context 'for an invalid url' do
+        setup do
+          FakeWeb.register_uri(:post, @url, :status => 500)
+          post :fire, :url => @url
+        end
+
+        should 'say webhook has failed to be deployed' do
+          assert_equal @response.body, "There was a problem deploying webhook to #{@url}"
+        end
+
+        should 'perform a POST request to url' do
+          assert_equal Net::HTTP::Post, FakeWeb.last_request.class
+          assert_equal '/test-fire', FakeWeb.last_request.path
+        end
+      end
+    end
   end
 end
