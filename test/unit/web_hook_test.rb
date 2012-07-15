@@ -28,6 +28,28 @@ class WebHookTest < ActiveSupport::TestCase
     end
   end
 
+  context 'invoking #deployed_message' do
+    setup do
+      @url = 'http://example.com'
+      @web_hook = WebHook.new(:url => @url)
+    end
+
+    should 'return a success message' do
+      assert_equal "Successfully deployed webhook to #{@url}", @web_hook.deployed_message
+    end
+  end
+
+  context 'invoking #failed_message' do
+    setup do
+      @url = 'http://example.com'
+      @web_hook = WebHook.new(:url => @url)
+    end
+
+    should 'return a removed message' do
+      assert_equal "There was a problem deploying webhook to #{@url}", @web_hook.failed_message
+    end
+  end
+
   context 'invoking #fire' do
     setup do
       @url = 'http://example.com/test'

@@ -15,6 +15,14 @@ class WebHook < ActiveRecord::Base
     "Successfully removed webhook to #{url}"
   end
 
+  def deployed_message
+    "Successfully deployed webhook to #{url}"
+  end
+
+  def failed_message
+    "There was a problem deploying webhook to #{url}"
+  end
+
   def fire(package_name, package_version, change_id, delayed=true)
     params = [self.url, package_name, package_version, change_id, self.user.api_key]
 
