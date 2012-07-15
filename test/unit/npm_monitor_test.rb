@@ -103,7 +103,7 @@ class NpmMonitorTest < ActiveSupport::TestCase
       :package_name     => 'express',
       :version          => '2.5.11',
       :version_cache_id => 1030
-    })
+    }.to_json)
 
     @monitor.save_to_cache(package, 1030)
   end

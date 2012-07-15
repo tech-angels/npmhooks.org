@@ -71,7 +71,7 @@ class NpmMonitor
       :package_name     => package.name,
       :version          => package.version,
       :version_cache_id => change_id
-    })
+    }.to_json)
   end
 
   def schedule_webhooks(package, change_id)
