@@ -16,5 +16,13 @@ class WebHook < ActiveRecord::Base
   end
 
   def fire(package_name, package_version, change_id, delayed=true)
+    params = [self.url, package_name, package_version, change_id, self.user.api_key]
+
+    if delayed
+      Resque.send(:enqueue, *([Notifier] + params))
+    else
+      @job = Notifier.send(:new, *params)
+      @job.perform
+    end
   end
 end
