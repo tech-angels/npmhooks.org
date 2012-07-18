@@ -83,7 +83,16 @@ class NpmMonitorTest < ActiveSupport::TestCase
 
   test '#process_change for a delete package' do
     change = { 'seq' => 1030, 'id' => 'deleted_package' }
-    NpmPackage.stubs(:remote_find_by_name).once.with('deleted_package').raises(ActiveRecord::RecordNotFound)
+    NpmPackage.stubs(:remote_find_by_name).once.with('deleted_package').raises(Exceptions::PackageNotFound)
+    Redis.current.expects(:set).never
+    @monitor.expects(:set_last_update).once.with(1030)
+
+    @monitor.process_change(change)
+  end
+
+  test '#process_change for an incomplete package' do
+    change = { 'seq' => 1030, 'id' => 'incomplete_package' }
+    NpmPackage.stubs(:remote_find_by_name).once.with('incomplete_package').raises(Exceptions::IncompletePackage)
     Redis.current.expects(:set).never
     @monitor.expects(:set_last_update).once.with(1030)
 

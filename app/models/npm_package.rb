@@ -1,7 +1,6 @@
 require 'net/http'
 
 class NpmPackage
-
   def initialize(package)
     @package = package
   end
@@ -76,7 +75,12 @@ class NpmPackage
   def self.remote_find_by_name(package)
     res = Net::HTTP.get_response(remote_uri_for_package(package))
     response = JSON.parse(res.body)
-    raise ActiveRecord::RecordNotFound if response['error'] == 'not_found'
+    raise Exceptions::PackageNotFound if response['error'] == 'not_found'
+
+    # When a new package is added, there is no 'versions' entries
+    # until the 2nd or 3rd save.
+    raise Exceptions::IncompletePackage if !response['versions'] || response['versions'].keys.length == 0
+
     NpmPackage.new(response)
   end
 
@@ -87,5 +91,4 @@ class NpmPackage
     return unless match = uri.path.match(/\A\/([^\/]+\/[^\/]+)\.git\z/)
     "https://github.com/#{match[1]}"
   end
-
 end

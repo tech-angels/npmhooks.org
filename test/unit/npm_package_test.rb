@@ -57,7 +57,10 @@ class NpmPackageTest < ActiveSupport::TestCase
       '_id'         => 'express',
       '_rev'        => '302-c61077032ef8b66dccd3b6e94294528a',
       'name'        => 'express',
-      'description' => 'Sinatra inspired web development framework'
+      'description' => 'Sinatra inspired web development framework',
+      'versions'    => {
+        '1.0.0' => {}
+      }
     }
     FakeWeb.register_uri(:get, package_url, :body => JSON.dump(response))
 
@@ -75,8 +78,24 @@ class NpmPackageTest < ActiveSupport::TestCase
     }
     FakeWeb.register_uri(:get, package_url, :body => JSON.dump(response))
 
-    assert_raises ActiveRecord::RecordNotFound do
+    assert_raises Exceptions::PackageNotFound do
       NpmPackage.remote_find_by_name('deleted_package')
+    end
+  end
+
+  def test_remote_find_by_name_incomplete
+    package_url = "#{@database_base_url}/express"
+    response = {
+      '_id'         => 'express',
+      '_rev'        => '302-c61077032ef8b66dccd3b6e94294528a',
+      'name'        => 'express',
+      'description' => 'Sinatra inspired web development framework',
+      'versions'    => {}
+    }
+    FakeWeb.register_uri(:get, package_url, :body => JSON.dump(response))
+
+    assert_raises Exceptions::IncompletePackage do
+      NpmPackage.remote_find_by_name('express')
     end
   end
 

@@ -55,9 +55,11 @@ class NpmMonitor
       package = NpmPackage.remote_find_by_name(change['id'])
       save_to_cache(package, change['seq'])
       schedule_webhooks(package, change['seq'])
-    rescue ActiveRecord::RecordNotFound
+    rescue Exceptions::PackageNotFound
       @logger.info("#{change['id']} has been deleted.")
       # @todo schedule deleted webhooks
+    rescue Exceptions::IncompletePackage
+      @logger.info("#{change['id']} is incomplete. It might have just been created?")
     ensure
       set_last_update(change['seq'])
     end
