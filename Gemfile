@@ -28,6 +28,13 @@ end
 
 gem 'jquery-rails'
 
+group :development do
+  gem 'capistrano'
+  gem 'capistrano-ext'
+  gem 'capistrano-helpers'
+  gem 'rvm-capistrano'
+end
+
 group :test do
   gem 'fakeweb'
   gem 'mocha', :require => nil
@@ -43,10 +50,7 @@ end
 # gem 'jbuilder'
 
 # Use unicorn as the app server
-# gem 'unicorn'
-
-# Deploy with Capistrano
-# gem 'capistrano'
+gem 'unicorn'
 
 # To use debugger
 # gem 'debugger'
