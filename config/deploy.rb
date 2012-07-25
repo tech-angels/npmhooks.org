@@ -46,7 +46,7 @@ set :app_server,      'unicorn'
 # ==============================================================================
 
 require 'capistrano-helpers/shared'
-set(:shared) { ["config/environments/#{stage}.yml", 'config/database.yml'] }
+set(:shared) { ['config/application.yml', "config/environments/#{stage}.yml", 'config/database.yml'] }
 
 # ==============================================================================
 # Unicorn
