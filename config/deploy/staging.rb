@@ -5,5 +5,7 @@ set :vhost,           'staging-npmhooks.tech-angels.net'
 set(:deploy_to) {     "/var/www/#{application}/#{stage}" }
 set(:shared_path) {   "/var/www/#{application}/#{stage}/shared" }
 
-role :app, 'npmhooks1.tech-angels.net'
-role :web, 'npmhooks1.tech-angels.net'
+set :npm_staging,        'npmhooks1.tech-angels.net'
+
+server npm_staging, :web, :app, :db 
+role :db, npm_staging, :primary => true
