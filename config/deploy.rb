@@ -46,7 +46,7 @@ set :app_server,      'unicorn'
 # ==============================================================================
 
 require 'capistrano-helpers/shared'
-set(:shared) { ['config/application.yml', "config/environments/#{stage}.yml", 'config/database.yml'] }
+set(:shared) { ['config/application.yml', 'config/database.yml', 'config/initializers/airbrake.rb'] }
 
 # ==============================================================================
 # Unicorn
@@ -79,3 +79,5 @@ namespace :deploy do
 end
 
 after 'deploy:restart', 'deploy:restart_workers'
+
+require 'airbrake/capistrano'

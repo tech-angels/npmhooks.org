@@ -24,3 +24,4 @@ db/*.sqlite3
 log
 config/application.yml
 config/database.yml
+config/initializers/airbrake.rb
