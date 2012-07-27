@@ -18,7 +18,7 @@ class UserTest < ActiveSupport::TestCase
   def test_auto_assign_api_key_on_create
     user = User.create({
       :provider => 'github',
-      :uid      => '1234',
+      :uid      => 1234,
       :login    => '1234'
     }, :without_protection => true)
 
