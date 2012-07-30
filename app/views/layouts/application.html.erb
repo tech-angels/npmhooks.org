@@ -3,14 +3,20 @@
 <head>
   <title>NpmHooks</title>
   <%= stylesheet_link_tag    "application", :media => "all" %>
-  <%= javascript_include_tag "application" %>
   <%= csrf_meta_tags %>
 </head>
 <body>
 
 <%= render 'shared/menu' %>
 
-<%= yield %>
+<div class="container">
+  <%= yield %>
+
+  <footer class="footer">
+    <p>Created by <a href="https://github.com/cjoudrey">Christian Joudrey</a>.</p>
+    <p>Kindly hosted by <a href="https://gemnasium.com">Gemnasium</a>.</p>
+  </footer>
+</div>
 
 </body>
 </html>

@@ -1,0 +1,40 @@
+<header class="header">
+  <h1>Webhook notifications whenever a npm package gets updated.</h1>
+</header>
+
+<h2>API Authorization</h2>
+<% if current_user %>
+  <p>Your API key: <strong><%= current_user.api_key %></strong></p>
+<% else %>
+  <p>To obtain an API key, simply click the <strong>Log in with GitHub</strong> button above.</p>
+<% end %>
+<p>API calls require an Authorization header. Here is an example:</p>
+<pre>
+$ curl -H 'Authorization:YOUR_API_KEY' \
+  <%= api_v1_web_hooks_url(:only_path => false) %>
+</pre>
+
+<h2>WebHooks Methods</h2>
+<h3>GET - <code><%= api_v1_web_hooks_path %></code></h3>
+<p>List the webhooks registered under your account.</p>
+<pre>
+$ curl -H 'Authorization:YOUR_API_KEY' \
+  <%= api_v1_web_hooks_url(:only_path => false) %>
+
+[
+  {
+    "failure_count": 12,
+    "url": "http://example.com"
+  }
+]
+</pre>
+
+<h3>POST - <code><%= api_v1_web_hooks_path %></code></h3>
+<p>Create a webhook. Requires one parameter: <code>url</code>.</p>
+<pre>
+$ curl -H 'Authorization:YOUR_API_KEY' \
+       -F 'url=http://example.com' \
+  <%= api_v1_web_hooks_url(:only_path => false) %>
+
+Successfully created webhook for rails to http://example.com
+</pre>
