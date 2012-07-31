@@ -15,6 +15,12 @@ class NpmMonitor
   end
 
   def last_update
+    return @last_update if @last_update
+
+    @last_update ||= Redis.current.get('NpmMonitor::last_update')
+    return @last_update if @last_update
+
+    @last_update ||= NpmPackage.remote_last_change_id
     @last_update
   end
 
@@ -25,7 +31,6 @@ class NpmMonitor
   end
 
   def start
-    @last_update = Redis.current.get('NpmMonitor::last_update')
     @logger.info("Last update: #{last_update}")
     while monitor_changes?
       @logger.info("Fetching changes since: #{last_update}")
@@ -95,7 +100,7 @@ class NpmMonitor
     return if new_last_update < last_update.to_i
     @logger.info("Setting last update to: #{new_last_update}")
     @last_update = new_last_update
-    Redis.current.set('NpmMonitor::last_update', last_update)
+    Redis.current.set('NpmMonitor::last_update', @last_update)
   end
 
 end
