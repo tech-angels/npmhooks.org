@@ -11,7 +11,7 @@
 <p>API calls require an Authorization header. Here is an example:</p>
 <pre>
 $ curl -H 'Authorization:YOUR_API_KEY' \
-  <%= api_v1_web_hooks_url(:only_path => false) %>
+       <%= api_v1_web_hooks_url(:only_path => false) %>
 </pre>
 
 <h2>WebHooks Methods</h2>
@@ -19,7 +19,7 @@ $ curl -H 'Authorization:YOUR_API_KEY' \
 <p>List the webhooks registered under your account.</p>
 <pre>
 $ curl -H 'Authorization:YOUR_API_KEY' \
-  <%= api_v1_web_hooks_url(:only_path => false) %>
+       <%= api_v1_web_hooks_url(:only_path => false) %>
 
 [
   {
@@ -34,7 +34,18 @@ $ curl -H 'Authorization:YOUR_API_KEY' \
 <pre>
 $ curl -H 'Authorization:YOUR_API_KEY' \
        -F 'url=http://example.com' \
-  <%= api_v1_web_hooks_url(:only_path => false) %>
+       <%= api_v1_web_hooks_url(:only_path => false) %>
 
 Successfully created webhook to http://example.com
+</pre>
+
+<h3>DELETE - <code><%= remove_api_v1_web_hooks_path %></code></h3>
+<p>Remove a webhook. Requires one parameter: <code>url</code>.</p>
+<pre>
+$ curl -H 'Authorization:YOUR_API_KEY' \
+       -F 'url=http://example.com' \
+       -X DELETE \
+       <%= remove_api_v1_web_hooks_url(:only_path => false) %>
+
+Successfully removed webhook to http://example.com
 </pre>
