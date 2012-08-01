@@ -17,9 +17,11 @@ class NpmMonitor
   def last_update
     return @last_update if @last_update
 
+    @logger.info('Loading last_update from Redis')
     @last_update ||= Redis.current.get('NpmMonitor::last_update')
     return @last_update if @last_update
 
+    @logger.info('Loading last_update from remote')
     @last_update ||= NpmPackage.remote_last_change_id
     @last_update
   end
