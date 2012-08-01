@@ -49,3 +49,14 @@ $ curl -H 'Authorization:YOUR_API_KEY' \
 
 Successfully removed webhook to http://example.com
 </pre>
+
+<h3>POST - <code><%= fire_api_v1_web_hooks_path %></code></h3>
+<p>Test fire a webhook. This can be used to test out an endpoint at any time, for example when you’re developing your application. Requires one parameter: <code>url</code>.</p>
+<p>An <code>Authorization</code> header is included with every fired webhook so you can be sure the request came from NpmHooks.org. The value of the header is the SHA2-hashed concatenation of the package name, the package version and your API key.</p>
+<pre>
+$ curl -H 'Authorization:YOUR_API_KEY' \
+       -F 'url=http://example.com' \
+       <%= fire_api_v1_web_hooks_url(:only_path => false) %>
+
+Successfully deployed webhook to http://example.com
+</pre>
