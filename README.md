@@ -20,3 +20,7 @@ The `application.yml` file must be configured as follows (sample [here](https://
 
 - `rake npm_monitor:start`: This daemon is responsible for monitoring the NPM database for package changes and will schedule the webhooks in Resque.
 - `rake requeue`: Resque workers to send out the webhooks.
+
+## API documentation
+
+The API documentation to schedule webhooks is currently available in the [homepage view](https://github.com/cjoudrey/npmhooks.org/blob/master/app/views/homepage/index.html.erb).
