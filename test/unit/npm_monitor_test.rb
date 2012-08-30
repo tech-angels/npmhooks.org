@@ -9,14 +9,30 @@ class NpmMonitorTest < ActiveSupport::TestCase
   def teardown
     NpmPackage.unstub(:remote_find_updated_since)
     NpmPackage.unstub(:remote_find_by_name)
+    NpmPackage.unstub(:remote_find_last_change_id)
     Redis.current.unstub(:set)
     Redis.current.unstub(:get)
     Redis.current.unstub(:expire)
     WebHook.unstub(:all)
   end
 
-  test '#last_update is nil by default' do
-    assert_equal nil, @monitor.last_update
+  test '#last_update should be obtained from cache when nil' do
+    Redis.current.expects(:get).once.with('NpmMonitor::last_update').returns(100)
+    assert_equal 100, @monitor.last_update
+  end
+
+  test '#last_update should return value when available' do
+    Redis.current.expects(:get).once.with('NpmMonitor::last_update').returns(100)
+    @monitor.last_update
+
+    assert_equal 100, @monitor.last_update
+  end
+
+  test '#last_update should be obtained from remote when cache is nil' do
+    Redis.current.expects(:get).once.with('NpmMonitor::last_update').returns(nil)
+    NpmPackage.stubs(:remote_last_change_id).returns(101)
+
+    assert_equal 101, @monitor.last_update
   end
 
   test '#stop? is false by default' do
@@ -150,6 +166,7 @@ class NpmMonitorTest < ActiveSupport::TestCase
   end
 
   test '#set_last_update' do
+    Redis.current.expects(:get).once.with('NpmMonitor::last_update').returns(1)
     Redis.current.expects(:set).once.with('NpmMonitor::last_update', 5)
 
     @monitor.set_last_update(5)
@@ -157,6 +174,7 @@ class NpmMonitorTest < ActiveSupport::TestCase
   end
 
   test '#set_last_update should not touch the last_update counter if the value is lesser than current' do
+    Redis.current.expects(:get).once.with('NpmMonitor::last_update').returns(1)
     Redis.current.expects(:set).once.with('NpmMonitor::last_update', 5)
     @monitor.set_last_update(5)
     Redis.current.expects(:set).never.with('NpmMonitor::last_update', 1)

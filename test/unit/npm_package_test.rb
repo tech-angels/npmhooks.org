@@ -22,6 +22,13 @@ class NpmPackageTest < ActiveSupport::TestCase
     assert_equal 'feed=longpoll&since=1029', uri.query
   end
 
+  def test_remote_uri_for_last_change_id
+    uri = NpmPackage.remote_uri_for_last_change_id
+
+    assert_kind_of URI, uri
+    assert_equal 'descending=true&limit=1', uri.query
+  end
+
   def test_remote_uri_for_package
     uri = NpmPackage.remote_uri_for_package('test')
 
@@ -97,6 +104,21 @@ class NpmPackageTest < ActiveSupport::TestCase
     assert_raises Exceptions::IncompletePackage do
       NpmPackage.remote_find_by_name('express')
     end
+  end
+
+  def test_remote_last_change_id
+    changes_url = "#{@database_base_url}/_changes?descending=true&limit=1"
+    response = {
+      :results => [
+        { :seq => 1029, :id => '_design/app' },
+      ],
+      :last_seq => 1029
+    }
+    FakeWeb.register_uri(:get, changes_url, :body => JSON.dump(response))
+
+    change_id = NpmPackage.remote_last_change_id
+
+    assert_equal 1029, change_id
   end
 
   def test_github_url

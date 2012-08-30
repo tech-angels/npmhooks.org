@@ -62,6 +62,13 @@ class NpmPackage
     uri
   end
 
+  def self.remote_uri_for_last_change_id
+    uri = URI("#{ENV['NPM_DATABASE_URL']}/_changes")
+    params = { :descending => 'true', :limit => 1  }
+    uri.query = URI.encode_www_form(params)
+    uri
+  end
+
   def self.remote_uri_for_package(package)
     URI("#{ENV['NPM_DATABASE_URL']}/#{package}")
   end
@@ -82,6 +89,12 @@ class NpmPackage
     raise Exceptions::IncompletePackage if !response['versions'] || response['versions'].keys.length == 0
 
     NpmPackage.new(response)
+  end
+
+  def self.remote_last_change_id
+    res = Net::HTTP.get_response(remote_uri_for_last_change_id)
+    response = JSON.parse(res.body, :symbolize_names => true)
+    response[:last_seq].to_i
   end
 
   def self.github_url(repository)

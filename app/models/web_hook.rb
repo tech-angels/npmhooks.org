@@ -33,4 +33,15 @@ class WebHook < ActiveRecord::Base
       @job.perform
     end
   end
+
+  def payload
+    {
+      "failure_count"  => failure_count,
+      "url"            => url
+    }
+  end
+
+  def as_json(options={})
+    payload
+  end
 end
