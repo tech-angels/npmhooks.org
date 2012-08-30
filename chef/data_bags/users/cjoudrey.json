@@ -1,7 +1,0 @@
-{
-  "id": "cjoudrey",
-  "groups": ["admin"],
-  "home": "/home/cjoudrey",
-  "shell": "/bin/bash",
-  "ssh_keys": ["ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDODP3Io7mZWwPuBfP3GylZ+ojAqeoV9mQKtmyN5x7n2GCXsUKV1Wirg17QfYeKR1aELZ1FpqK120g8tHEMwnCGk+ewLXOfEZOw4jEyQ8kmpOf79aG53wVAz3Tlc175DVoT/4SAaZdbVmSpO/ut68lS+uHicxdsbXKySN6Ih3UlAVRjjML3XKdPbBT6F4c2LEFTb25gXjmx8bo+iOdQXEhsOXlDoPWP0sYDxopD5YYdZbO5hG2bNjnJBjklk4fBmRGa516LS99kmJ+i83e25VGlw25qixE8apdoBgveba00kfBTTrVLa03Fbh/oKrZPOKnmL0S9MEP2+8jq8Jk9ttNb MBA"]
-}
