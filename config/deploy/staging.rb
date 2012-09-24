@@ -1,4 +1,4 @@
-set :branch,          'develop'
+set :branch,          fetch(:branch, 'master')
 set :rails_env,       'staging'
 set :user,            'stagingnpmhooks'
 set :vhost,           'staging-npmhooks.tech-angels.net'
