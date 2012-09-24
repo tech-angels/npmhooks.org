@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120727224807) do
+ActiveRecord::Schema.define(:version => 20120924205506) do
 
   create_table "users", :force => true do |t|
     t.string   "github_uid"
@@ -22,6 +22,9 @@ ActiveRecord::Schema.define(:version => 20120727224807) do
     t.string   "api_key",    :limit => 32
   end
 
+  add_index "users", ["api_key"], :name => "index_users_on_api_key", :unique => true
+  add_index "users", ["github_uid"], :name => "index_users_on_github_uid", :unique => true
+
   create_table "web_hooks", :force => true do |t|
     t.integer  "user_id"
     t.string   "url"
@@ -31,5 +34,6 @@ ActiveRecord::Schema.define(:version => 20120727224807) do
   end
 
   add_index "web_hooks", ["url"], :name => "index_web_hooks_on_url", :unique => true
+  add_index "web_hooks", ["user_id"], :name => "index_web_hooks_on_user_id"
 
 end
