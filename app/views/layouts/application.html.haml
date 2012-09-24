@@ -1,0 +1,19 @@
+!!!
+%html
+  %head
+    %title NpmHooks
+    = stylesheet_link_tag "application", :media => "all"
+    = csrf_meta_tags
+  %body
+    = render 'shared/menu'
+    .container
+      = yield
+      %footer.footer
+        %p
+          Created by
+          = succeed "." do
+            %a{:href => "https://github.com/cjoudrey"} Christian Joudrey
+        %p
+          Kindly hosted by
+          = succeed "." do
+            %a{:href => "https://gemnasium.com"} Gemnasium
