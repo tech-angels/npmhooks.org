@@ -1,0 +1,5 @@
+.navbar.navbar-fixed-top
+  .navbar-inner
+    .container
+      %a.brand{:href => "/"} NpmHooks
+      = render current_user ? 'shared/menu_user' : 'shared/menu_guest'

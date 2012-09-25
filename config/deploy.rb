@@ -48,35 +48,20 @@ set :app_server,      'unicorn'
 require 'capistrano-helpers/shared'
 set(:shared) { ['config/application.yml', 'config/database.yml', 'config/initializers/airbrake.rb'] }
 
-# ==============================================================================
-# Unicorn
-# ==============================================================================
-
-# Originally copied from smtlaissezfaire / cap_unicorn
-namespace :unicorn do
-  desc "Restart unicorn"
-  task :restart do
-    run "oldpid=$(cat /var/www/#{application}/#{stage}/shared/pids/unicorn.pid) && kill -s USR2 $oldpid && echo 'Searching for newly spawned master process...' && until (pid=$(cat /var/www/#{application}/#{stage}/shared/pids/unicorn.pid 2>/dev/null) && test '$pid' != '$oldpid' && ps x |grep $pid|grep master) ; do sleep 1 ; done && kill -s WINCH $oldpid && kill -s QUIT $oldpid"
-  end
-end
-
 namespace :deploy do
   desc "Restart the unicorn workers"
   task :restart do
-    unicorn.restart
+    run "sudo monit restart unicorn_gatekeeper-#{rails_env}"
   end
-end
 
-# ==============================================================================
-# Resque
-# ==============================================================================
-
-namespace :deploy do
   desc 'Restart Resque workers.'
   task :restart_workers, :roles => :app do
     run "sudo /usr/sbin/monit -g resque-npmhooks-#{stage} restart"
   end
 end
+
+# Database migration on deploy
+after "deploy:update", "deploy:migrate"
 
 after 'deploy:restart', 'deploy:restart_workers'
 

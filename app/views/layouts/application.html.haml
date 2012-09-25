@@ -1,0 +1,23 @@
+!!!
+%html
+  %head
+    %title NpmHooks
+    = stylesheet_link_tag "application", :media => "all"
+    = csrf_meta_tags
+  %body
+    = render 'shared/menu'
+    .container
+      = yield
+      %footer.footer
+        %h3 Contributing
+        %p
+          %a(href="https://github.com/tech-angels/npmhooks.org") Fork us on github
+        %h3 Credits
+        %p
+          Created by
+          = succeed "." do
+            %a{:href => "https://github.com/cjoudrey"} Christian Joudrey
+        %p
+          Kindly hosted by
+          = succeed "." do
+            %a{:href => "https://gemnasium.com"} Gemnasium

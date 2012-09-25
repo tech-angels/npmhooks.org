@@ -1,6 +1,6 @@
 source 'https://rubygems.org'
 
-gem 'rails', '3.2.7'
+gem 'rails', '3.2.8'
 
 # Bundle edge Rails instead:
 # gem 'rails', :git => 'git://github.com/rails/rails.git'
@@ -14,6 +14,7 @@ gem 'redis', '~> 3.0.1'
 gem 'resque'
 gem 'gravatar_image_tag'
 gem 'rest-client'
+gem 'haml'
 
 # Gems used only for assets and not required
 # in production environments by default.
