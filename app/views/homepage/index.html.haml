@@ -12,23 +12,25 @@
     button above.
 %p API calls require an Authorization header. Here is an example:
 %pre
-  $ curl -H 'Authorization:#{@api_key}' \
-  \#{api_v1_web_hooks_url(:only_path => false)}
+  :preserve
+    $ curl -H 'Authorization:#{@api_key}' \
+           #{api_v1_web_hooks_url(:only_path => false)}
 %h2 WebHook Methods
 %h3
   GET -
   %code= api_v1_web_hooks_path
 %p List the webhooks registered under your account.
 %pre
-  $ curl -H 'Authorization:#{@api_key}' \
-  \#{api_v1_web_hooks_url(:only_path => false)}
-  
-  [
-  {
-  "failure_count": 12,
-  "url": "http://example.com"
-  }
-  ]
+  :preserve
+    $ curl -H 'Authorization:#{@api_key}' \
+           #{api_v1_web_hooks_url(:only_path => false)}
+
+    [
+      {
+        "failure_count": 12,
+        "url": "http://example.com"
+      }
+    ]
 %h3
   POST -
   %code= api_v1_web_hooks_path
@@ -37,11 +39,12 @@
   = succeed "." do
     %code url
 %pre
-  $ curl -H 'Authorization:#{@api_key}' \
-  \-F 'url=http://example.com' \
-  \#{api_v1_web_hooks_url(:only_path => false)}
-  
-  Successfully created webhook to http://example.com
+  :preserve
+    $ curl -H 'Authorization:#{@api_key}' \
+           -F 'url=http://example.com' \
+           #{api_v1_web_hooks_url(:only_path => false)}
+
+    Successfully created webhook to http://example.com
 %h3
   DELETE -
   %code= remove_api_v1_web_hooks_path
@@ -50,12 +53,13 @@
   = succeed "." do
     %code url
 %pre
-  $ curl -H 'Authorization:#{@api_key}' \
-  \-F 'url=http://example.com' \
-  \-X DELETE \
-  \#{remove_api_v1_web_hooks_url(:only_path => false)}
-  
-  Successfully removed webhook to http://example.com
+  :preserve
+    $ curl -H 'Authorization:#{@api_key}' \
+           -F 'url=http://example.com' \
+           -X DELETE \
+           #{remove_api_v1_web_hooks_url(:only_path => false)}
+
+    Successfully removed webhook to http://example.com
 %h3
   POST -
   %code= fire_api_v1_web_hooks_path
@@ -68,11 +72,12 @@
   %code Authorization
   header is included with every fired webhook so you can be sure the request came from NpmHooks.org. The value of the header is the SHA2-hashed concatenation of the package name, the package version and your API key.
 %pre
-  $ curl -H 'Authorization:#{@api_key}' \
-  \-F 'url=http://example.com' \
-  \#{fire_api_v1_web_hooks_url(:only_path => false)}
-  
-  Successfully deployed webhook to http://example.com
+  :preserve
+    $ curl -H 'Authorization:#{@api_key}' \
+           -F 'url=http://example.com' \
+           #{fire_api_v1_web_hooks_url(:only_path => false)}
+
+    Successfully deployed webhook to http://example.com
 %p Sample webhook body:
 %pre
   :preserve
