@@ -51,7 +51,7 @@ set(:shared) { ['config/application.yml', 'config/database.yml', 'config/initial
 namespace :deploy do
   desc "Restart the unicorn workers"
   task :restart do
-    run "sudo monit restart unicorn_gatekeeper-#{rails_env}"
+    run "sudo monit restart unicorn_npmhooks-#{rails_env}"
   end
 
   desc 'Restart Resque workers.'
