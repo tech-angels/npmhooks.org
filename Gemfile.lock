@@ -83,9 +83,9 @@ GEM
     jwt (0.1.5)
       multi_json (>= 1.0)
     kgio (2.7.4)
-    less (2.2.1)
+    less (2.2.2)
       commonjs (~> 0.2.6)
-    less-rails (2.2.3)
+    less-rails (2.2.6)
       actionpack (>= 3.1)
       less (~> 2.2.0)
     libv8 (3.3.10.4)
@@ -207,10 +207,11 @@ GEM
     treetop (1.4.12)
       polyglot
       polyglot (>= 0.3.1)
-    twitter-bootstrap-rails (2.1.6)
+    twitter-bootstrap-rails (2.1.1)
       actionpack (>= 3.1)
-      execjs
+      less-rails (~> 2.2.2)
       railties (>= 3.1)
+      therubyracer (= 0.10.1)
     twitter-stream (0.1.16)
       eventmachine (>= 0.12.8)
       http_parser.rb (~> 0.5.1)
@@ -241,7 +242,6 @@ DEPENDENCIES
   gravatar_image_tag
   haml
   jquery-rails
-  less-rails
   mocha
   omniauth
   omniauth-github
@@ -255,8 +255,7 @@ DEPENDENCIES
   sass-rails (~> 3.2.3)
   shoulda
   sqlite3
-  therubyracer
-  twitter-bootstrap-rails
+  twitter-bootstrap-rails (= 2.1.1)
   uglifier (>= 1.0.3)
   unicorn
   validates_formatting_of

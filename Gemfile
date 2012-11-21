@@ -6,7 +6,7 @@ gem 'rails', '3.2.9'
 # gem 'rails', :git => 'git://github.com/rails/rails.git'
 
 gem 'pg'
-gem 'twitter-bootstrap-rails'
+gem 'twitter-bootstrap-rails', '2.1.1'
 gem 'sqlite3'
 gem 'omniauth'
 gem 'omniauth-github'
@@ -26,8 +26,6 @@ group :assets do
   # gem 'therubyracer', :platforms => :ruby
 
   gem 'uglifier', '>= 1.0.3'
-  gem 'therubyracer'
-  gem 'less-rails'
 end
 
 gem 'jquery-rails'
