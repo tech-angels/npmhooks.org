@@ -1,5 +1,6 @@
 npmhooks.org
 ============
+[![Dependency Status](https://gemnasium.com/tech-angels/npmhooks.org.png)](https://gemnasium.com/tech-angels/npmhooks.org)
 
 Project to add Rubygem-like webhooks to NPM.
 
