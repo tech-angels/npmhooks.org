@@ -1,5 +1,11 @@
 language: ruby
+bundler_args: --without production development
 rvm:
   - 1.9.3
+before_script:
+  - psql -c 'create database npmhooks_test;' -U postgres
+  - psql -c 'create database npmhooks_development;' -U postgres
+  - "mv config/database.yml.example config/database.yml"
+  - "mv config/application.example.yml config/application.yml"
 services:
   - redis-server
