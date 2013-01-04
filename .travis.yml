@@ -6,5 +6,6 @@ before_script:
   - psql -c 'create database npmhooks_test;' -U postgres
   - "mv config/database.yml.example config/database.yml"
   - "mv config/application.example.yml config/application.yml"
+  - 'RAILS_ENV=test rake db:create db:schema:load --trace'
 services:
   - redis-server
