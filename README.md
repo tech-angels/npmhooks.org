@@ -1,6 +1,7 @@
 npmhooks.org
 ============
 [![Dependency Status](https://gemnasium.com/tech-angels/npmhooks.org.png)](https://gemnasium.com/tech-angels/npmhooks.org)
+[![Build Status](https://travis-ci.org/tech-angels/npmhooks.org.png?branch=master)](https://travis-ci.org/tech-angels/npmhooks.org)
 
 Project to add Rubygem-like webhooks to NPM.
 
