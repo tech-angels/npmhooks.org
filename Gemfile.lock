@@ -1,3 +1,11 @@
+GIT
+  remote: git://github.com/westarete/capistrano-helpers.git
+  revision: 6814eb69ce830df7ad995c8f33ce81d8c0d71014
+  specs:
+    capistrano-helpers (0.7.1)
+      capistrano
+      git
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -42,10 +50,6 @@ GEM
       net-ssh-gateway (>= 1.1.0)
     capistrano-ext (1.2.1)
       capistrano (>= 1.0.0)
-    capistrano-helpers (0.7.1)
-      capistrano
-      git
-      tinder
     coffee-rails (3.2.2)
       coffee-script (>= 2.2.0)
       railties (~> 3.2.0)
@@ -54,8 +58,6 @@ GEM
       execjs
     coffee-script-source (1.6.3)
     commonjs (0.2.6)
-    crack (0.4.0)
-      safe_yaml (~> 0.9.0)
     erubis (2.7.0)
     eventmachine (1.0.3)
     execjs (1.4.0)
@@ -168,7 +170,6 @@ GEM
       mime-types (>= 1.16)
     rvm-capistrano (1.4.0)
       capistrano (>= 2.0.0)
-    safe_yaml (0.9.3)
     sass (3.2.9)
     sass-rails (3.2.6)
       railties (~> 3.2.0)
@@ -233,9 +234,8 @@ DEPENDENCIES
   airbrake
   capistrano
   capistrano-ext
-  capistrano-helpers
+  capistrano-helpers!
   coffee-rails (~> 3.2.1)
-  crack
   fakeweb
   gravatar_image_tag
   haml
@@ -253,6 +253,7 @@ DEPENDENCIES
   sass-rails (~> 3.2.3)
   shoulda
   sqlite3
+  tinder
   twitter-bootstrap-rails (= 2.1.1)
   uglifier (>= 1.0.3)
   unicorn

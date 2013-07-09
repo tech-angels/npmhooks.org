@@ -35,8 +35,8 @@ gem 'jquery-rails'
 group :development do
   gem 'capistrano'
   gem 'capistrano-ext'
-  gem 'capistrano-helpers'
-  gem 'crack'
+  gem 'capistrano-helpers', github: "westarete/capistrano-helpers"
+  gem 'tinder'
   gem 'rvm-capistrano'
 end
 
