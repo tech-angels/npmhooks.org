@@ -2,7 +2,7 @@ source 'https://rubygems.org'
 
 gem 'rails', '3.2.13'
 # Even it's shipped with rails, ensure we get latest security fix
-gem 'json', '>=1.7.7'
+# gem 'json', '>=1.7.7'
 
 # Bundle edge Rails instead:
 # gem 'rails', :git => 'git://github.com/rails/rails.git'
@@ -36,6 +36,7 @@ group :development do
   gem 'capistrano'
   gem 'capistrano-ext'
   gem 'capistrano-helpers'
+  gem 'crack'
   gem 'rvm-capistrano'
 end
 
