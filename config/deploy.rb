@@ -49,14 +49,17 @@ require 'capistrano-helpers/shared'
 set(:shared) { ['config/application.yml', 'config/database.yml', 'config/initializers/airbrake.rb'] }
 
 namespace :deploy do
-  desc "Restart the unicorn workers"
+  # ==============================================================================
+  # Unicorn
+  # ==============================================================================
+  desc "Restart unicorn"
   task :restart do
-    run "sudo monit restart unicorn_npmhooks-#{rails_env}"
+    run "kill -s USR2 `cat /var/www/#{application}/#{stage}/shared/pids/unicorn.pid`"
   end
 
   desc 'Restart Resque workers.'
   task :restart_workers, :roles => :app do
-    run "sudo /usr/sbin/monit -g resque-npmhooks-#{stage} restart"
+    run "sudo /usr/bin/monit -g resque-npmhooks-#{stage} restart"
   end
 end
 
