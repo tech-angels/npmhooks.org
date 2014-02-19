@@ -18,7 +18,8 @@ gem 'resque-retry'
 gem 'gravatar_image_tag'
 gem 'rest-client'
 gem 'haml'
-gem "json", "~> 1.8.1"
+gem "therubyracer"
+gem "less-rails" #Sprockets (what Rails 3.1 uses for its asset pipeline) supports LESS
 
 # Gems used only for assets and not required
 # in production environments by default.
