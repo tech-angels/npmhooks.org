@@ -1,6 +1,6 @@
 source 'https://rubygems.org'
 
-gem 'rails', '3.2.13'
+gem 'rails', '3.2.17'
 # Even it's shipped with rails, ensure we get latest security fix
 # gem 'json', '>=1.7.7'
 
@@ -8,12 +8,13 @@ gem 'rails', '3.2.13'
 # gem 'rails', :git => 'git://github.com/rails/rails.git'
 
 gem 'pg'
-gem 'twitter-bootstrap-rails', '2.1.1'
+gem "twitter-bootstrap-rails", "~> 2.2.8"
 gem 'sqlite3'
 gem 'omniauth'
 gem 'omniauth-github'
 gem 'redis', '~> 3.0.1'
 gem 'resque'
+gem 'resque-retry'
 gem 'gravatar_image_tag'
 gem 'rest-client'
 gem 'haml'

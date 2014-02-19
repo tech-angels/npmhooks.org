@@ -1,4 +1,6 @@
 class Notifier
+
+  extend Resque::Plugins::ExponentialBackoff
   @queue = :web_hooks
 
   attr_reader :url, :package_name, :version, :version_cache_id, :api_key
