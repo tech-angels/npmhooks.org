@@ -7,7 +7,7 @@ set :rvm_bin_path,      '/usr/local/rvm/bin'
 require "rvm/capistrano"
 
 # Set ruby version to use
-set :rvm_ruby_string, 'ruby-1.9.3-p327@npmhooks'
+set :rvm_ruby_string, 'ruby-2.1.0@npmhooks'
 
 # Campfire notifications
 # $: << File.join(File.dirname(__FILE__),'..')
