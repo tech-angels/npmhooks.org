@@ -52,7 +52,7 @@ class NpmPackage
   end
 
   def self.author_name_from_package(package)
-    package['author'] ? package['author']['name'] : nil
+    package['author'] ? package['author'].try(:[], 'name') : nil
   end
 
   def self.remote_uri_for_changes(since)
