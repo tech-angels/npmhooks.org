@@ -52,7 +52,16 @@ class NpmPackage
   end
 
   def self.author_name_from_package(package)
-    package['author'] ? package['author'].try(:[], 'name') : nil
+    #package['author'] ? package['author'].try(:[], 'name') : nil
+    @authors ||= (
+      owners = []
+      author = package['author'] ? package['author'].try(:[], 'name') : nil
+      contributors = package['contributors'] ? package['contributors'].try(:[], 'name') : nil
+      owners << author
+      owners << contributors
+      owners.flatten.compact
+    )
+    owners
   end
 
   def self.remote_uri_for_changes(since)
