@@ -1,6 +1,6 @@
 source 'https://rubygems.org'
 
-gem 'rails', '3.2.17'
+gem 'rails', '4.0.3'
 # Even it's shipped with rails, ensure we get latest security fix
 # gem 'json', '>=1.7.7'
 
@@ -23,15 +23,14 @@ gem "less-rails" #Sprockets (what Rails 3.1 uses for its asset pipeline) support
 
 # Gems used only for assets and not required
 # in production environments by default.
-group :assets do
-  gem 'sass-rails',   '~> 3.2.3'
-  gem 'coffee-rails', '~> 3.2.1'
+gem 'sass-rails',   '~> 4.0.0'
+gem 'coffee-rails', '~> 4.0.0'
 
-  # See https://github.com/sstephenson/execjs#readme for more supported runtimes
-  # gem 'therubyracer', :platforms => :ruby
 
-  gem 'uglifier', '>= 1.0.3'
-end
+# See https://github.com/sstephenson/execjs#readme for more supported runtimes
+# gem 'therubyracer', :platforms => :ruby
+
+gem 'uglifier', '>= 1.3.0'
 
 gem 'jquery-rails'
 

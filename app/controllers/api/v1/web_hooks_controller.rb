@@ -1,13 +1,12 @@
 class Api::V1::WebHooksController < Api::BaseController
   respond_to :json, :only => :index
-
+  #before_action :load_webhook, only: [:index, :fire, :remove]
   def index
     respond_with current_user.web_hooks
   end
 
   def create
-    webhook = current_user.web_hooks.build(:url => params[:url])
-
+    webhook = current_user.web_hooks.build(webhook_params)
     if webhook.save
       render(:text => webhook.success_message, :status => :created)
     else
@@ -16,7 +15,7 @@ class Api::V1::WebHooksController < Api::BaseController
   end
 
   def remove
-    webhook = current_user.web_hooks.find_by_url(params[:url])
+    webhook = current_user.web_hooks.where(webhook_params)
     if webhook.try(:destroy)
       render(:text => webhook.removed_message, :status => 200)
     else
@@ -34,4 +33,10 @@ class Api::V1::WebHooksController < Api::BaseController
       render(:text => webhook.failed_message, :status => 400)
     end
   end
+
+  private
+
+    def webhook_params
+      params.require(:webhook).permit!
+    end
 end

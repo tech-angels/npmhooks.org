@@ -5,7 +5,7 @@ NPMHooks::Application.routes.draw do
   get 'auth/failure' => 'sessions#create', :success => false
   get 'auth/github' => proc{ [404, {}, []] }
 
-  match 'signout', to: 'sessions#destroy', as: 'signout'
+  get 'signout', to: 'sessions#destroy', as: 'signout'
 
   namespace :api do
     namespace :v1 do

@@ -1,7 +1,7 @@
 class WebHook < ActiveRecord::Base
   belongs_to :user
 
-  attr_accessible :url
+  #attr_accessible :url
 
   validates_presence_of :user
   validates_presence_of :url

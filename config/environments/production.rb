@@ -1,6 +1,8 @@
 NPMHooks::Application.configure do
   # Settings specified here will take precedence over those in config/application.rb
 
+  config.eager_load = true
+
   # Code is not reloaded between requests
   config.cache_classes = true
 
@@ -29,6 +31,8 @@ NPMHooks::Application.configure do
 
   # Force all access to the app over SSL, use Strict-Transport-Security, and use secure cookies.
   # config.force_ssl = true
+  
+  config.assets.js_compressor = :uglifier
 
   # See everything in the log (default is :info)
   # config.log_level = :debug
