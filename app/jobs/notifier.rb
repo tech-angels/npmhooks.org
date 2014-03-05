@@ -1,7 +1,9 @@
 class Notifier
 
-  extend Resque::Plugins::ExponentialBackoff
+  extend Resque::Plugins::Retry
   @queue = :web_hooks
+  @backoff_strategy = [0, 60, 600, 3600, 10_800, 21_600]
+  @retry_limit = @backoff_strategy.length
 
   attr_reader :url, :package_name, :version, :version_cache_id, :api_key
 
@@ -31,6 +33,17 @@ class Notifier
                       'Authorization' => authorization
     end
     true
+  rescue *(HTTP_ERRORS + [RestClient::Exception, SocketError, SystemCallError]) => e
+    WebHook.find_by_url(url).try(:increment!, :failure_count)
+
+    # Simulate Resque::Plungins::ExponentialBackoff
+    unless retry_limit_reached?
+      retry_delay = @backoff_strategy[retry_attempt] || @backoff_strategy.last
+
+      Resque.enqueue_in(retry_delay, self)
+    end
+
+    false
   end
 
   def timeout(sec, &block)
