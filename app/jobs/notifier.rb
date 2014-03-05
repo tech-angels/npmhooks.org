@@ -31,9 +31,6 @@ class Notifier
                       'Authorization' => authorization
     end
     true
-  rescue *(HTTP_ERRORS + [RestClient::Exception, SocketError, SystemCallError]) => e
-    WebHook.find_by_url(url).try(:increment!, :failure_count)
-    false
   end
 
   def timeout(sec, &block)
