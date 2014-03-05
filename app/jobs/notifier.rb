@@ -41,9 +41,9 @@ class Notifier
       retry_delay = @backoff_strategy[retry_attempt] || @backoff_strategy.last
 
       Resque.enqueue_in(retry_delay, self)
+    else
+      raise e
     end
-
-    false
   end
 
   def timeout(sec, &block)
