@@ -66,7 +66,7 @@ class NpmMonitor
       @logger.info("#{change['id']} has been deleted.")
       # @todo schedule deleted webhooks
     rescue Exceptions::IncompletePackage
-      @logger.info("#{change['id']} is incomplete. It might have just been created?")
+      @logger.info("#{change['id']} is incomplete. It might have just been created or it might be failed partial publish.")
     ensure
       set_last_update(change['seq'])
     end

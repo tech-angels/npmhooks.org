@@ -15,6 +15,10 @@ class NpmPackage
 
   def as_json(options=nil)
     latest = @package['versions'][version]
+    # Some packages doesn't have the latest dist-tags. It might be due to a failed
+    # partial publish prior to npm v1.3.19.
+    # cf: https://twitter.com/indexzero/status/441326968336699392/photo/1
+    raise Exceptions::IncompletePackage if latest.nil?
 
     hash = {
       :authors          => NpmPackage.author_name_from_package(latest),
