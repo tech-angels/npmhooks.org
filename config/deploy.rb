@@ -9,12 +9,6 @@ require "rvm/capistrano"
 # Set ruby version to use
 set :rvm_ruby_string, 'ruby-2.1.0@npmhooks'
 
-# Campfire notifications
-# $: << File.join(File.dirname(__FILE__),'..')
-# require 'lib/dev_helpers/campfire_deploy_notif'
-require 'capistrano-helpers/campfire'
-set :campfire_config, "#{ENV['HOME']}/.npmhooks.yml"
-
 # Use bundler with capistrano
 require 'bundler/capistrano'
 
