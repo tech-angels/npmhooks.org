@@ -1,6 +1,6 @@
 source 'https://rubygems.org'
 
-gem 'rails', '3.2.17'
+gem 'rails', '3.2.18'
 # Even it's shipped with rails, ensure we get latest security fix
 # gem 'json', '>=1.7.7'
 
