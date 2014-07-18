@@ -12,7 +12,7 @@ gem "twitter-bootstrap-rails", "~> 2.2.8"
 gem 'sqlite3'
 gem 'omniauth'
 gem 'omniauth-github'
-gem 'redis', '~> 3.0.1'
+gem 'redis', '<= 3.1.0', '>= 3.0.7'
 gem 'resque'
 gem 'resque-retry'
 gem 'gravatar_image_tag'
